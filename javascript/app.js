@@ -11,9 +11,11 @@ var width = svg[0][0].clientWidth
 var height = svg[0][0].clientHeight
 var screenCenterX = width / 2
 var screenCenterY = height / 2
+var strokeWidth = 2
 var radius = 40
-var fanRadius = 100
-var progressIndicatorBreadth = 10
+var fanOuterRadius = 100
+var fanInnerRadius = radius - strokeWidth
+var progressIndicatorBreadth = 5
 var innerRadius = radius - progressIndicatorBreadth
 var circle360 = 2 * Math.PI
 var userSelectionTime = 1500
@@ -30,22 +32,23 @@ var defs = svg.append("defs");
 // height=130% so that the shadow is not clipped
 var filter = defs.append("filter")
     .attr("id", "drop-shadow")
-    .attr("height", "130%");
+    .attr("width", "200%")
+    .attr("height", "200%")
 
 // SourceAlpha refers to opacity of graphic that this filter will be applied to
 // convolve that with a Gaussian with standard deviation 3 and store result
 // in blur
 filter.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
-    .attr("stdDeviation", 3)
+    .attr("stdDeviation", 4)
     .attr("result", "blur");
 
 // translate output of Gaussian blur to the right and downwards with 2px
 // store result in offsetBlur
 filter.append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 2)
-    .attr("dy", 2)
+    .attr("dx", 6)
+    .attr("dy", 6)
     .attr("result", "offsetBlur");
 
 // overlay original SourceGraphic over translated blurred opacity by using
@@ -79,6 +82,100 @@ var moveActionPoint = function () {
 var action = svg.append("g")
                   .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
                   .style("pointer-events", "auto")
+
+
+////////////////////////////////
+
+var dataset = {
+  tier1Controls: [1, 1, 1, 1, 1],
+  tier2Controls: [1, 1, 1, 1, 1],
+  tier3Controls: [1, 1, 1, 1, 1]
+};
+
+var fanBreadth = 80
+
+var fanBackgroundArc = d3.svg.arc()
+      .innerRadius(fanInnerRadius)
+      .outerRadius(fanInnerRadius)
+      .startAngle(-(90/180) * Math.PI)
+      .endAngle(0)
+
+var fanBackground = action.append("path")
+                          .classed({"action": true, "fan": true})
+                          .style("fill", "#ddd")
+                          .attr("d", fanBackgroundArc)
+                          .style("filter", "url(#drop-shadow)")
+
+var color = d3.scale.category20();
+var pie = d3.layout.pie().sort(null);
+
+var pie = d3.layout.pie()
+        .sort(null)
+        .startAngle(-(90/180) * Math.PI)
+        .endAngle(0)
+
+var fanArcFirstTier = d3.svg.arc()
+
+var tiers = action.selectAll("g")
+                .data(d3.values(dataset))
+              .enter()
+              .append("g");
+
+var fan = tiers.selectAll("path")
+              .data(function(d) { return pie(d); })
+            .enter().append("path")
+            .classed({"action": true, "fan": true})
+            .style("opacity", 0.3)
+            .style("stroke", "#ddd")
+            .style("stroke-width", strokeWidth)
+            .attr("fill", function(d, i) { return color(i) })
+            .attr("d", function(d, i, j) {
+              return fanArcFirstTier
+                        .innerRadius(fanInnerRadius)
+                        .outerRadius(fanInnerRadius)(d)
+            })
+
+function expandFan () {
+  fanBackground.transition()
+    .attr("d", function(d, i, j) {
+      return fanBackgroundArc
+                .innerRadius(fanInnerRadius)
+                .outerRadius(fanOuterRadius)(d)
+    })
+    .duration(300)
+    .ease("cubic")
+
+  fan.transition()
+    .attr("d", function(d, i, j) {
+      return fanArcFirstTier
+                .innerRadius(fanInnerRadius)
+                .outerRadius(fanOuterRadius)(d)
+    })
+    .duration(300)
+    .ease("cubic")
+}
+
+function collapseFan () {
+  fanBackground.transition()
+    .attr("d", function(d, i, j) {
+      return fanBackgroundArc
+                .innerRadius(fanInnerRadius)
+                .outerRadius(fanInnerRadius)(d)
+    })
+    .duration(300)
+    .ease("cubic")
+
+  fan.transition()
+    .attr("d", function(d, i, j) {
+      return fanArcFirstTier
+                .innerRadius(fanInnerRadius)
+                .outerRadius(fanInnerRadius)(d)
+    })
+    .duration(300)
+    .ease("cubic")
+}
+
+/////////////////////////////////////
 
 var backgroundArc = d3.svg.arc()
       .outerRadius(radius)
@@ -121,63 +218,6 @@ var timerForeground = action.append("path")
                           .style("fill", "#ad494a")
                           .attr("d", foregroundArc)
 
-////////////////////////////////
-
-var dataset = {
-  tier1Controls: [1, 1, 1, 1, 1],
-  tier2Controls: [1, 1, 1, 1, 1],
-  tier3Controls: [1, 1, 1, 1, 1]
-};
-
-var fanBreadth = 80
-
-var color = d3.scale.category20();
-var pie = d3.layout.pie().sort(null);
-
-var pie = d3.layout.pie()
-        .sort(null)
-        .startAngle(-(90/180) * Math.PI)
-        .endAngle(0)
-
-var fanArcFirstTier = d3.svg.arc()
-
-var tiers = action.selectAll("g")
-                .data(d3.values(dataset))
-              .enter()
-              .append("g");
-
-var fan = tiers.selectAll("path")
-              .data(function(d) { return pie(d); })
-            .enter().append("path")
-            .classed({"action": true, "fan": true})
-            .attr("fill", function(d, i) { return color(i) })
-            .style("opacity", 0.4)
-            .attr("d", function(d, i, j) {
-              return fanArcFirstTier
-                        .innerRadius(radius)
-                        .outerRadius(radius)(d)
-            })
-
-function expandFan () {
-  fan.transition()
-    .attr("d", function(d, i, j) {
-      return fanArcFirstTier
-                .innerRadius(radius)
-                .outerRadius(fanRadius)(d)
-    })
-    .duration(300)
-}
-
-function collapseFan () {
-  fan.transition()
-    .attr("d", function(d, i, j) {
-      return fanArcFirstTier
-                .innerRadius(radius)
-                .outerRadius(radius)(d)
-    })
-    .duration(200)
-}
-
 /////////////////////////////////////
 
 d3.selectAll(".action").on("mouseenter", function () {
@@ -192,11 +232,6 @@ d3.selectAll(".action").on("mouseout", function () {
 actionSelector.on("mouseover", function () {
   triggerActionPointMove()
 })
-
-// fan.on("mouseover", function (f) {
-//   f.style("filter", "url(#drop-shadow)")
-// })
-
 
 function triggerActionPointMove () {
   timerForeground.datum({endAngle: 0})
