@@ -9,14 +9,16 @@ var svg = d3.select("body")
 
 var width = svg[0][0].clientWidth
 var height = svg[0][0].clientHeight
+var screenCenterX = width / 2
+var screenCenterY = height / 2
 var radius = 40
 var fanRadius = 100
-var innerRadius = radius / 2
-var progressIndicatorBreadth = radius - innerRadius
+var progressIndicatorBreadth = 10
+var innerRadius = radius - progressIndicatorBreadth
 var circle360 = 2 * Math.PI
 var userSelectionTime = 1500
 var animateDuration = 300
-var fanAngle = Math.PI / 16
+var fanAngle = Math.PI / 20
 
 ///////////////////////////////////////////////////////
 // drop shadows
@@ -57,10 +59,20 @@ feMerge.append("feMergeNode")
 
 ////////////////////////////////////////////////
 
+var currentAngle = 0
 
 var moveActionPoint = function () {
   d3.select("html").on("mousemove", function () {
-    action.attr("transform", "translate(" + d3.event.clientX + "," + d3.event.clientY + ")")
+    var x = d3.event.clientX
+    var y = d3.event.clientY
+
+    if (x > screenCenterX) {
+      currentAngle = (y > screenCenterY) ? 0 : 270
+    } else {
+      currentAngle = (y > screenCenterY) ? 90 : 180
+    }
+
+    action.attr("transform", "translate(" + x + "," + y + ") rotate(" + currentAngle + ")")
   })
 }
 
@@ -74,8 +86,8 @@ var backgroundArc = d3.svg.arc()
       .startAngle(0)
 
 var foregroundArc = d3.svg.arc()
-      .outerRadius(radius - 2)
-      .innerRadius(innerRadius + 2)
+      .outerRadius(radius)
+      .innerRadius(innerRadius)
       .startAngle(0)
 
 function arcAngleTween (transition, newAngle) {
@@ -91,6 +103,8 @@ function arcAngleTween (transition, newAngle) {
 var actionSelector = action.append("circle")
                       .classed({"action": true})
                       .attr("r", radius)
+                      .style("opacity", 0)
+
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
@@ -104,15 +118,15 @@ var timerBackground = action.append("path")
 var timerForeground = action.append("path")
                           .datum({endAngle: 0})
                           .style("pointer-events", "none")
-                          .style("fill", "orange")
+                          .style("fill", "#ad494a")
                           .attr("d", foregroundArc)
 
 ////////////////////////////////
 
 var dataset = {
-  tier1Controls: [1, 1, 1, 1],
-  tier2Controls: [1, 1, 1, 1],
-  tier3Controls: [1, 1, 1, 1]
+  tier1Controls: [1, 1, 1, 1, 1],
+  tier2Controls: [1, 1, 1, 1, 1],
+  tier3Controls: [1, 1, 1, 1, 1]
 };
 
 var fanBreadth = 80
@@ -133,16 +147,16 @@ var tiers = action.selectAll("g")
               .append("g");
 
 var fan = tiers.selectAll("path")
-    .data(function(d) { return pie(d); })
-  .enter().append("path")
-    .classed({"action": true})
-    .attr("fill", function(d, i) { return color(i) })
-    .style("opacity", 0.4)
-    .attr("d", function(d, i, j) {
-      return fanArcFirstTier
-                .innerRadius(radius)
-                .outerRadius(radius)(d)
-    })
+              .data(function(d) { return pie(d); })
+            .enter().append("path")
+            .classed({"action": true, "fan": true})
+            .attr("fill", function(d, i) { return color(i) })
+            .style("opacity", 0.4)
+            .attr("d", function(d, i, j) {
+              return fanArcFirstTier
+                        .innerRadius(radius)
+                        .outerRadius(radius)(d)
+            })
 
 function expandFan () {
   fan.transition()
@@ -161,7 +175,7 @@ function collapseFan () {
                 .innerRadius(radius)
                 .outerRadius(radius)(d)
     })
-    .duration(300)
+    .duration(200)
 }
 
 /////////////////////////////////////
@@ -178,6 +192,10 @@ d3.selectAll(".action").on("mouseout", function () {
 actionSelector.on("mouseover", function () {
   triggerActionPointMove()
 })
+
+// fan.on("mouseover", function (f) {
+//   f.style("filter", "url(#drop-shadow)")
+// })
 
 
 function triggerActionPointMove () {
