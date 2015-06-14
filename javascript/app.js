@@ -9,7 +9,8 @@ var svg = d3.select("body")
 
 var width = svg[0][0].clientWidth
 var height = svg[0][0].clientHeight
-var radius = 50
+var radius = 40
+var progressIndicatorThickness = radius / 2
 var circle360 = 2 * Math.PI
 
 ///////////////////////////////////////////////////////
@@ -67,21 +68,20 @@ var moveAction = function () {
 
 
 var action = svg.append("g")
-                  .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")");
+                  .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
+                  .style("pointer-events", "auto")
 
 // catpure the cursorPosition
 var cursorPosition = {x:0, y:0}
-action.on("mouseenter", moveAction)
 
-var arc1 = d3.svg.arc()
+var backgroundArc = d3.svg.arc()
     .outerRadius(radius)
-    .innerRadius(radius - 20)
+    .innerRadius(radius - progressIndicatorThickness)
     .startAngle(0)
 
-
-var arc2 = d3.svg.arc()
-    .outerRadius(radius - 1)
-    .innerRadius(radius - 19)
+var foregroundArc = d3.svg.arc()
+    .outerRadius(radius - 2)
+    .innerRadius(radius - progressIndicatorThickness + 2)
     .startAngle(0)
 
 function arcTween(transition, newAngle) {
@@ -89,26 +89,43 @@ function arcTween(transition, newAngle) {
     var interpolate = d3.interpolate(d.endAngle, newAngle);
     return function(t) {
       d.endAngle = interpolate(t);
-      return arc2(d);
+      return foregroundArc(d);
     };
   });
 }
 
+var actionSelector = action.append("circle")
+                      .attr("r", radius)
+
 // Add the background arc, from 0 to 100% (τ).
 var background = action.append("path")
                           .datum({endAngle: circle360})
+                          .style("pointer-events", "none")
                           .style("fill", "#ddd")
-                          .attr("d", arc1)
+                          .attr("d", backgroundArc)
                           .style("filter", "url(#drop-shadow)")
 
 // Add the foreground arc in orange, currently 0%.
 var foreground = action.append("path")
                           .datum({endAngle: 0})
+                          .style("pointer-events", "none")
                           .style("fill", "orange")
-                          .attr("d", arc2)
-                          .style("pointer-events", "auto")
-                          .style("cursor", "crosshair")
-                          .transition()
-                            .ease("linear")
-                            .duration(2000)
-                            .call(arcTween, circle360)
+                          .attr("d", foregroundArc)
+
+
+
+actionSelector.on("mouseenter", function () {
+  foreground.datum({endAngle: 0})
+    .transition()
+      .ease("linear")
+      .duration(2000)
+      .call(arcTween, circle360)
+      .each('end', moveAction);
+})
+
+actionSelector.on("mouseout", function () {
+  foreground
+    .transition()
+      .duration(100)
+      .call(arcTween, 0)
+})
