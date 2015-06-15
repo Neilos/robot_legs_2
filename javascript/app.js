@@ -88,19 +88,19 @@ var action = svg.append("g")
 
 var dataset = {
   tier1Controls: [
-    {value: 3, color: "#1f77b4"},
-    {value: 3, color: "#1f77b4"},
-    {value: 2, color: "#ff7f0e"},
-    {value: 2, color: "#2ca02c"},
-    {value: 2, color: "#d62728"},
-    {value: 2, color: "#9467bd"}
+    {value: 3, color: "#1f77b4", action: function(){console.log("action 1")} },
+    {value: 3, color: "#1f77b4", action: function(){console.log("action 2")} },
+    {value: 2, color: "#ff7f0e", action: function(){console.log("action 3")} },
+    {value: 2, color: "#2ca02c", action: function(){console.log("action 4")} },
+    {value: 2, color: "#d62728", action: function(){console.log("action 5")} },
+    {value: 2, color: "#9467bd", action: function(){console.log("action 6")} }
   ],
   tier2Controls: [
-    {value: 6, color: "#1f77b4"},
-    {value: 2, color: "#ff7f0e"},
-    {value: 2, color: "#2ca02c"},
-    {value: 2, color: "#d62728"},
-    {value: 2, color: "#9467bd"}
+    {value: 6, color: "#1f77b4", action: function(){console.log("action 7")} },
+    {value: 2, color: "#ff7f0e", action: function(){console.log("action 8")} },
+    {value: 2, color: "#2ca02c", action: function(){console.log("action 9")} },
+    {value: 2, color: "#d62728", action: function(){console.log("action 10")} },
+    {value: 2, color: "#9467bd", action: function(){console.log("action 11")} }
   ]
 };
 
@@ -136,7 +136,7 @@ var tiers = action.selectAll("g")
 var fan = tiers.selectAll("path")
               .data(function(d) { return pie(d); })
             .enter().append("path")
-            .classed({"action": true, "fan": true})
+            .classed({"control": true, "fan": true})
             .style("stroke", "#ddd")
             .style("stroke-width", strokeWidth)
             .attr("fill", function(d, i) { return d.data.color })
@@ -144,6 +144,13 @@ var fan = tiers.selectAll("path")
               return fanArcFirstTier
                         .innerRadius(fanInnerRadius)
                         .outerRadius(fanInnerRadius)(d)
+            })
+            .on("mouseenter", function (d) {
+              expandFan()
+              d.data.action.call()
+            })
+            .on("mouseout", function (d) {
+              collapseFan()
             })
 
 function expandFan () {
