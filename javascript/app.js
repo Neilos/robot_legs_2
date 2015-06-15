@@ -86,23 +86,25 @@ var action = svg.append("g")
 
 ////////////////////////////////
 
-var dataset = {
-  tier1Controls: [
-    {value: 3, color: "#1f77b4", action: function(){console.log("action 1")} },
-    {value: 3, color: "#1f77b4", action: function(){console.log("action 2")} },
-    {value: 2, color: "#ff7f0e", action: function(){console.log("action 3")} },
-    {value: 2, color: "#2ca02c", action: function(){console.log("action 4")} },
-    {value: 2, color: "#d62728", action: function(){console.log("action 5")} },
-    {value: 2, color: "#9467bd", action: function(){console.log("action 6")} }
+var controls = {
+  outerControls: [
+    {value: 3, color: "#1f77b4", controlFn: function(){console.log("action 1")} },
+    {value: 3, color: "#1f77b4", controlFn: function(){console.log("action 2")} },
+    {value: 2, color: "#ff7f0e", controlFn: function(){console.log("action 3")} },
+    {value: 2, color: "#2ca02c", controlFn: function(){console.log("action 4")} },
+    {value: 2, color: "#d62728", controlFn: function(){console.log("action 5")} },
+    {value: 2, color: "#9467bd", controlFn: function(){console.log("action 6")} }
   ],
-  tier2Controls: [
-    {value: 6, color: "#1f77b4", action: function(){console.log("action 7")} },
-    {value: 2, color: "#ff7f0e", action: function(){console.log("action 8")} },
-    {value: 2, color: "#2ca02c", action: function(){console.log("action 9")} },
-    {value: 2, color: "#d62728", action: function(){console.log("action 10")} },
-    {value: 2, color: "#9467bd", action: function(){console.log("action 11")} }
+  innerControls: [
+    {value: 6, color: "#1f77b4", controlFn: function(){console.log("action 7")} },
+    {value: 2, color: "#ff7f0e", controlFn: function(){console.log("action 8")} },
+    {value: 2, color: "#2ca02c", controlFn: function(){console.log("action 9")} },
+    {value: 2, color: "#d62728", controlFn: function(){console.log("action 10")} },
+    {value: 2, color: "#9467bd", controlFn: function(){console.log("action 11")} }
   ]
 };
+
+var numberOfControlTiers = d3.values(controls).length
 
 var fanBreadth = 80
 
@@ -126,10 +128,10 @@ var pie = d3.layout.pie()
           .endAngle(0)
           .sort(null)
 
-var fanArcFirstTier = d3.svg.arc()
+var fanArc = d3.svg.arc()
 
 var tiers = action.selectAll("g")
-                .data(d3.values(dataset))
+                .data(d3.values(controls))
               .enter()
               .append("g");
 
@@ -141,13 +143,13 @@ var fan = tiers.selectAll("path")
             .style("stroke-width", strokeWidth)
             .attr("fill", function(d, i) { return d.data.color })
             .attr("d", function(d, i, j) {
-              return fanArcFirstTier
-                        .innerRadius(fanInnerRadius)
-                        .outerRadius(fanInnerRadius)(d)
+              return fanArc
+                      .innerRadius(fanInnerRadius)
+                      .outerRadius(fanInnerRadius)(d)
             })
             .on("mouseenter", function (d) {
               expandFan()
-              d.data.action.call()
+              d.data.controlFn.call()
             })
             .on("mouseout", function (d) {
               collapseFan()
@@ -158,16 +160,16 @@ function expandFan () {
     .attr("d", function(d, i, j) {
       return fanBackgroundArc
                 .innerRadius(fanInnerRadius)
-                .outerRadius((d3.values(dataset).length - j) * fanOuterRadius)(d)
+                .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
     })
     .duration(300)
     .ease("cubic")
 
   fan.transition()
     .attr("d", function(d, i, j) {
-      return fanArcFirstTier
+      return fanArc
                 .innerRadius(fanInnerRadius)
-                .outerRadius((d3.values(dataset).length - j) * fanOuterRadius)(d)
+                .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
     })
     .duration(300)
     .ease("cubic")
@@ -175,22 +177,18 @@ function expandFan () {
 
 function collapseFan () {
   fanBackground.transition()
-    .attr("d", function(d, i, j) {
-      return fanBackgroundArc
-                .innerRadius(fanInnerRadius)
-                .outerRadius(fanInnerRadius)(d)
-    })
     .duration(300)
     .ease("cubic")
+    .attr("d", function(d, i, j) {
+      return fanBackgroundArc.innerRadius(fanInnerRadius).outerRadius(fanInnerRadius)(d)
+    })
 
   fan.transition()
-    .attr("d", function(d, i, j) {
-      return fanArcFirstTier
-                .innerRadius(fanInnerRadius)
-                .outerRadius(fanInnerRadius)(d)
-    })
     .duration(300)
     .ease("cubic")
+    .attr("d", function(d, i, j) {
+      return fanArc.innerRadius(fanInnerRadius).outerRadius(fanInnerRadius)(d)
+    })
 }
 
 /////////////////////////////////////
@@ -220,7 +218,6 @@ var actionSelector = action.append("circle")
                       .attr("r", radius)
                       .style("opacity", 0)
 
-
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
                           .datum({endAngle: circle360})
@@ -244,11 +241,11 @@ d3.selectAll(".action").on("mouseenter", function () {
 
 d3.selectAll(".action").on("mouseout", function () {
   collapseFan()
-  cancelActionPointMove()
+  // cancelActionPointMove()
 })
 
 actionSelector.on("mouseover", function () {
-  triggerActionPointMove()
+  // triggerActionPointMove()
 })
 
 function triggerActionPointMove () {
@@ -266,4 +263,3 @@ function cancelActionPointMove () {
       .duration(animateDuration)
       .call(arcAngleTween, 0)
 }
-
