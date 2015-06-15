@@ -86,25 +86,58 @@ var action = svg.append("g")
 
 ////////////////////////////////
 
-var controls = {
+var controlData = {
   outerControls: [
-    {value: 3, color: "#1f77b4", controlFn: function(){console.log("action 1")} },
-    {value: 3, color: "#1f77b4", controlFn: function(){console.log("action 2")} },
-    {value: 2, color: "#ff7f0e", controlFn: function(){console.log("action 3")} },
-    {value: 2, color: "#2ca02c", controlFn: function(){console.log("action 4")} },
-    {value: 2, color: "#d62728", controlFn: function(){console.log("action 5")} },
-    {value: 2, color: "#9467bd", controlFn: function(){console.log("action 6")} }
+    { value: 3,
+      color: "#1f77b4",
+      text: "action 1",
+      controlFn: function(){console.log("action 1")} },
+    { value: 3,
+      color: "#1f77b4",
+      text: "action 2",
+      controlFn: function(){console.log("action 2")} },
+    { value: 2,
+      color: "#ff7f0e",
+      text: "action 3",
+      controlFn: function(){console.log("action 3")} },
+    { value: 2,
+      color: "#2ca02c",
+      text: "action 4",
+      controlFn: function(){console.log("action 4")} },
+    { value: 2,
+      color: "#d62728",
+      text: "action 5",
+      controlFn: function(){console.log("action 5")} },
+    { value: 2,
+      color: "#9467bd",
+      text: "action 6",
+      controlFn: function(){console.log("action 6")} }
   ],
   innerControls: [
-    {value: 6, color: "#1f77b4", controlFn: function(){console.log("action 7")} },
-    {value: 2, color: "#ff7f0e", controlFn: function(){console.log("action 8")} },
-    {value: 2, color: "#2ca02c", controlFn: function(){console.log("action 9")} },
-    {value: 2, color: "#d62728", controlFn: function(){console.log("action 10")} },
-    {value: 2, color: "#9467bd", controlFn: function(){console.log("action 11")} }
+    { value: 6,
+      color: "#1f77b4",
+      text: "action 7",
+      controlFn: function(){console.log("action 7")} },
+    { value: 2,
+      color: "#ff7f0e",
+      text: "action 8",
+      controlFn: function(){console.log("action 8")} },
+    { value: 2,
+      color: "#2ca02c",
+      text: "action 9",
+      controlFn: function(){console.log("action 9")} },
+    { value: 2,
+      color: "#d62728",
+      text: "action 10",
+      controlFn: function(){console.log("action 10")} },
+    { value: 2,
+      color: "#9467bd",
+      text: "action 12",
+      controlFn: function(){console.log("action 11")} }
   ]
 };
 
-var numberOfControlTiers = d3.values(controls).length
+var numberOfControlTiers = d3.values(controlData).length
 
 var fanBreadth = 80
 
@@ -131,7 +164,7 @@ var pie = d3.layout.pie()
 var fanArc = d3.svg.arc()
 
 var tiers = action.selectAll("g")
-                .data(d3.values(controls))
+                .data(d3.values(controlData))
               .enter()
               .append("g");
 
