@@ -1,3 +1,54 @@
+var CONTROLS = {
+  innerControls: [
+    { value: 2,
+      color: "#1f77b4",
+      text: "action 7",
+      controlFn: function(){console.log("action 7")} },
+    { value: 2,
+      color: "#ff7f0e",
+      text: "action 8",
+      controlFn: function(){console.log("action 8")} },
+    { value: 2,
+      color: "#2ca02c",
+      text: "action 9",
+      controlFn: function(){console.log("action 9")} },
+    { value: 2,
+      color: "#d62728",
+      text: "action 10",
+      controlFn: function(){console.log("action 10")} },
+    { value: 2,
+      color: "#9467bd",
+      text: "action 12",
+      controlFn: function(){console.log("action 11")} }
+  ],
+  outerControls: [
+    { value: 1,
+      color: "none",
+      text: "",
+      controlFn: function(){console.log("action 1")} },
+    { value: 1,
+      color: "#1f77b4",
+      text: "action 2",
+      controlFn: function(){console.log("action 2")} },
+    { value: 2,
+      color: "#ff7f0e",
+      text: "action 3",
+      controlFn: function(){console.log("action 3")} },
+    { value: 2,
+      color: "#2ca02c",
+      text: "action 4",
+      controlFn: function(){console.log("action 4")} },
+    { value: 2,
+      color: "#d62728",
+      text: "action 5",
+      controlFn: function(){console.log("action 5")} },
+    { value: 2,
+      color: "#9467bd",
+      text: "action 6",
+      controlFn: function(){console.log("action 6")} }
+  ]
+};
+
 var svg = d3.select("body")
             .append('svg')
               .attr("width", "100%")
@@ -12,9 +63,10 @@ var height = svg[0][0].clientHeight
 var screenCenterX = width / 2
 var screenCenterY = height / 2
 var strokeWidth = 2
+var tierBreadth = 80
 var radius = 40
-var fanOuterRadius = 100
-var fanInnerRadius = radius - strokeWidth
+// var tierBreadth = radius + 2 * tierBreadth
+// var radius = radius + tierBreadth
 var progressIndicatorBreadth = 5
 var innerRadius = radius - progressIndicatorBreadth
 var circle360 = 2 * Math.PI
@@ -80,121 +132,103 @@ var moveActionPoint = function () {
 }
 
 var action = svg.append("g")
+                  .classed({"action": true})
                   .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
                   .style("pointer-events", "auto")
 
 
 ////////////////////////////////
 
-var controlData = {
-  outerControls: [
-    { value: 2,
-      color: "#1f77b4",
-      text: "action 1",
-      controlFn: function(){console.log("action 1")} },
-    { value: 2,
-      color: "#1f77b4",
-      text: "action 2",
-      controlFn: function(){console.log("action 2")} },
-    { value: 2,
-      color: "#ff7f0e",
-      text: "action 3",
-      controlFn: function(){console.log("action 3")} },
-    { value: 2,
-      color: "#2ca02c",
-      text: "action 4",
-      controlFn: function(){console.log("action 4")} },
-    { value: 2,
-      color: "#d62728",
-      text: "action 5",
-      controlFn: function(){console.log("action 5")} },
-    { value: 2,
-      color: "#9467bd",
-      text: "action 6",
-      controlFn: function(){console.log("action 6")} }
-  ],
-  innerControls: [
-    { value: 4,
-      color: "#1f77b4",
-      text: "action 7",
-      controlFn: function(){console.log("action 7")} },
-    { value: 2,
-      color: "#ff7f0e",
-      text: "action 8",
-      controlFn: function(){console.log("action 8")} },
-    { value: 2,
-      color: "#2ca02c",
-      text: "action 9",
-      controlFn: function(){console.log("action 9")} },
-    { value: 2,
-      color: "#d62728",
-      text: "action 10",
-      controlFn: function(){console.log("action 10")} },
-    { value: 2,
-      color: "#9467bd",
-      text: "action 12",
-      controlFn: function(){console.log("action 11")} }
-  ]
-};
 
-var numberOfControlTiers = d3.values(controlData).length
+action.append("path").classed({"fanBackground": true})
 
-var fanBreadth = 80
+function update (controlData) {
 
-var fanBackgroundArc = d3.svg.arc()
-      .innerRadius(fanInnerRadius)
-      .outerRadius(fanInnerRadius)
-      .startAngle(-(90/180) * Math.PI)
-      .endAngle(0)
+  var numberOfControlTiers = d3.values(controlData).length
 
-var fanBackground = action.append("path")
-                          .classed({"action": true, "fan": true})
-                          .style("fill", "#ddd")
-                          .attr("d", fanBackgroundArc)
-                          .style("filter", "url(#drop-shadow)")
+  var fanBreadth = 80
 
-var color = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ]
+  var fanBackground = action.select("path.fanBackground")
+                            .attr("d", d3.svg.arc()
+                                        .innerRadius(radius)
+                                        .outerRadius(radius)
+                                        .startAngle(-(90/180) * Math.PI)
+                                        .endAngle(0)
+                            )
+                            .classed({"fanBackground": true, "action": true})
+                            .style("fill", "#ddd")
+                            .style("filter", "url(#drop-shadow)")
 
-var pie = d3.layout.pie()
-          .value(function(d) { return d.value })
-          .startAngle(-(90/180) * Math.PI)
-          .endAngle(0)
-          .sort(null)
+  var pie = d3.layout.pie()
+            .value(function(d) { return d.value })
+            .startAngle(-(90/180) * Math.PI)
+            .endAngle(0)
+            .sort(null)
 
-var fanArc = d3.svg.arc()
+  var fanArc = d3.svg.arc()
 
-var tiers = action.selectAll("g")
-                .data(d3.values(controlData))
-              .enter()
-              .append("g");
+  var tiers = action.selectAll("g.tier")
+    .data(d3.values(controlData))
 
-var fan = tiers.selectAll("path")
-              .data(function(d) { return pie(d); })
-            .enter().append("g").append("path")
-            .classed({"control": true, "fan": true})
-            .style("stroke", "#ddd")
-            .style("stroke-width", strokeWidth)
-            .attr("fill", function(d, i) { return d.data.color })
-            .attr("d", function(d, i, j) {
-              return fanArc
-                      .innerRadius(fanInnerRadius)
-                      .outerRadius(fanInnerRadius)(d)
-            })
-            .on("mouseenter", function (d) {
-              expandFan()
-              d.data.controlFn.call()
-            })
-            .on("mouseout", function (d) {
-              collapseFan()
-            })
+  var tiersEnter = tiers.enter().append("g").classed({"tier": true})
 
-var controls = tiers.selectAll("g")
+  var controls = tiers.selectAll("g")
+                    .data(function (d) { return pie(d) })
 
-var controlLabels = controls.append("text")
-                      .style("pointer-events", "none")
-                      .style("fill", "none")
-                      .style("font", "bold 10px Arial")
-                      .text(function(d) { return d.data.text })
+  var controlsEnter = controls.enter().append("g").classed({"control": true})
+  controlsEnter.append("path").classed({"fan": true})
+  controlsEnter.append("text").classed({"control-label": true})
+
+  var fans = controls.select("path.fan")
+  fans
+    .style("stroke", "#ddd")
+    .style("stroke-width", strokeWidth)
+    .attr("fill", function(d, i) { return d.data.color })
+    .style("opacity", 0.5)
+    .attr("d", function(d, i, j) {
+      return fanArc.innerRadius(radius).outerRadius(radius)(d)
+    })
+    .on("mouseenter", function (d) {
+      d.data.controlFn.call()
+    })
+    .transition()
+      .duration(300)
+      .ease("cubic")
+      .attr("d", function(d, i, j) {
+        return fanArc
+                  .innerRadius(j * tierBreadth + radius)
+                  .outerRadius((j + 1) * tierBreadth + radius)(d)
+      })
+
+  var controlLabels = controls.select("text.control-label")
+  controlLabels
+    .classed({"control-label": true})
+    .style("pointer-events", "none")
+    .style("fill", "none")
+    .style("font", "bold 10px Arial")
+    .attr("dx", function(d) {
+      var a = angle(d, 0, 0);
+      return a < 0 ? "-16px" : "16px";
+    })
+    .attr("text-anchor", function(d) {
+      var a = angle(d, 0, 0);
+      return a < 0 ? "start" : "end";
+    })
+    .attr("transform", function(d, i, j) { //set text'ss origin to the centroid
+      //we have to make sure to set these before calling arc.centroid
+      fanArc
+        .innerRadius(j * tierBreadth + radius)
+        .outerRadius((j + 1) * tierBreadth + radius)(d)
+      return "translate(" + fanArc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
+    })
+    .style("fill", "black")
+    .transition()
+      .delay(300)
+      .duration(0)
+      .text(function (d) { return d.data.text })
+
+  controls.exit().remove()
+}
 
 // Angle Calculation Function...
 function angle(d, offset, threshold) {
@@ -202,68 +236,27 @@ function angle(d, offset, threshold) {
   return a > threshold ? a - 180 : a;
 }
 
+// function expandFan () {
+//   fanBackground
+//     .transition()
+//       .duration(300)
+//       .ease("cubic")
+//       .attr("d", function(d, i, j) {
+//         return fanBackgroundArc
+//                   .innerRadius(radius)
+//                   .outerRadius(radius + numberOfControlTiers * tierBreadth)(d)
+//       })
+// }
 
-function expandFan () {
-  fanBackground.transition()
-    .attr("d", function(d, i, j) {
-      return fanBackgroundArc
-                .innerRadius(fanInnerRadius)
-                .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
-    })
-    .duration(300)
-    .ease("cubic")
-
-  fan.transition()
-    .attr("d", function(d, i, j) {
-      return fanArc
-                .innerRadius(fanInnerRadius)
-                .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
-    })
-    .duration(300)
-    .ease("cubic")
-    .each('end', function (d) {
-      // Add link names to the arcs, translated to the arc centroid and rotated.
-      controlLabels
-        .attr("dx", function(d) {
-          var a = angle(d, 0, 0);
-          return a < 0 ? "-16px" : "16px";
-        })
-        .attr("text-anchor", function(d) {
-          var a = angle(d, 0, 0);
-          return a < 0 ? "start" : "end";
-        })
-        .attr("transform", function(d, i, j) { //set text'ss origin to the centroid
-          //we have to make sure to set these before calling arc.centroid
-          fanArc
-            .innerRadius(fanInnerRadius)
-            .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
-          return "translate(" + fanArc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
-        })
-        .style("fill", "black")
-    })
-
-
-}
-
-function collapseFan () {
-  fanBackground.transition()
-    .duration(300)
-    .ease("cubic")
-    .attr("d", function(d, i, j) {
-      return fanBackgroundArc.innerRadius(fanInnerRadius).outerRadius(fanInnerRadius)(d)
-    })
-
-  fan.transition()
-    .duration(300)
-    .ease("cubic")
-    .attr("d", function(d, i, j) {
-      return fanArc.innerRadius(fanInnerRadius).outerRadius(fanInnerRadius)(d)
-    })
-    .each("start", function () {
-      controlLabels.style("fill", "none")
-    })
-
-}
+// function collapseFan () {
+//   fanBackground
+//     .transition()
+//       .duration(300)
+//       .ease("cubic")
+//       .attr("d", function(d, i, j) {
+//         return fanBackgroundArc.innerRadius(radius).outerRadius(radius)(d)
+//       })
+// }
 
 /////////////////////////////////////
 
@@ -309,17 +302,14 @@ var timerForeground = action.append("path")
 
 /////////////////////////////////////
 
-d3.selectAll(".action").on("mouseenter", function () {
-  expandFan()
+action.on("mouseout", function () {
+  update({innerControls: [], outerControls: []})
+  // cancelActionPointMove()
 })
 
-d3.selectAll(".action").on("mouseout", function () {
-  collapseFan()
-  cancelActionPointMove()
-})
-
-actionSelector.on("mouseover", function () {
-  triggerActionPointMove()
+action.on("mouseenter", function () {
+  update(CONTROLS)
+  // triggerActionPointMove()
 })
 
 function triggerActionPointMove () {
@@ -337,3 +327,4 @@ function cancelActionPointMove () {
       .duration(animateDuration)
       .call(arcAngleTween, 0)
 }
+
