@@ -140,7 +140,7 @@ function expandFan () {
     .attr("d", function(d, i, j) {
       return fanBackgroundArc
                 .innerRadius(fanInnerRadius)
-                .outerRadius(fanOuterRadius)(d)
+                .outerRadius((d3.values(dataset).length - j) * fanOuterRadius)(d)
     })
     .duration(300)
     .ease("cubic")
@@ -149,7 +149,7 @@ function expandFan () {
     .attr("d", function(d, i, j) {
       return fanArcFirstTier
                 .innerRadius(fanInnerRadius)
-                .outerRadius(fanOuterRadius)(d)
+                .outerRadius((d3.values(dataset).length - j) * fanOuterRadius)(d)
     })
     .duration(300)
     .ease("cubic")
