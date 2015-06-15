@@ -87,9 +87,21 @@ var action = svg.append("g")
 ////////////////////////////////
 
 var dataset = {
-  tier1Controls: [1, 1, 1, 1, 1],
-  tier2Controls: [1, 1, 1, 1, 1],
-  tier3Controls: [1, 1, 1, 1, 1]
+  tier1Controls: [
+    {value: 3, color: "#1f77b4"},
+    {value: 3, color: "#1f77b4"},
+    {value: 2, color: "#ff7f0e"},
+    {value: 2, color: "#2ca02c"},
+    {value: 2, color: "#d62728"},
+    {value: 2, color: "#9467bd"}
+  ],
+  tier2Controls: [
+    {value: 6, color: "#1f77b4"},
+    {value: 2, color: "#ff7f0e"},
+    {value: 2, color: "#2ca02c"},
+    {value: 2, color: "#d62728"},
+    {value: 2, color: "#9467bd"}
+  ]
 };
 
 var fanBreadth = 80
@@ -106,13 +118,13 @@ var fanBackground = action.append("path")
                           .attr("d", fanBackgroundArc)
                           .style("filter", "url(#drop-shadow)")
 
-var color = d3.scale.category20();
-var pie = d3.layout.pie().sort(null);
+var color = [ "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf" ]
 
 var pie = d3.layout.pie()
-        .sort(null)
-        .startAngle(-(90/180) * Math.PI)
-        .endAngle(0)
+          .value(function(d) { return d.value })
+          .startAngle(-(90/180) * Math.PI)
+          .endAngle(0)
+          .sort(null)
 
 var fanArcFirstTier = d3.svg.arc()
 
@@ -127,7 +139,7 @@ var fan = tiers.selectAll("path")
             .classed({"action": true, "fan": true})
             .style("stroke", "#ddd")
             .style("stroke-width", strokeWidth)
-            .attr("fill", function(d, i) { return color(i) })
+            .attr("fill", function(d, i) { return d.data.color })
             .attr("d", function(d, i, j) {
               return fanArcFirstTier
                         .innerRadius(fanInnerRadius)
