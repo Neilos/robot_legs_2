@@ -88,11 +88,11 @@ var action = svg.append("g")
 
 var controlData = {
   outerControls: [
-    { value: 3,
+    { value: 2,
       color: "#1f77b4",
       text: "action 1",
       controlFn: function(){console.log("action 1")} },
-    { value: 3,
+    { value: 2,
       color: "#1f77b4",
       text: "action 2",
       controlFn: function(){console.log("action 2")} },
@@ -114,7 +114,7 @@ var controlData = {
       controlFn: function(){console.log("action 6")} }
   ],
   innerControls: [
-    { value: 6,
+    { value: 4,
       color: "#1f77b4",
       text: "action 7",
       controlFn: function(){console.log("action 7")} },
@@ -170,7 +170,7 @@ var tiers = action.selectAll("g")
 
 var fan = tiers.selectAll("path")
               .data(function(d) { return pie(d); })
-            .enter().append("path")
+            .enter().append("g").append("path")
             .classed({"control": true, "fan": true})
             .style("stroke", "#ddd")
             .style("stroke-width", strokeWidth)
@@ -187,6 +187,21 @@ var fan = tiers.selectAll("path")
             .on("mouseout", function (d) {
               collapseFan()
             })
+
+var controls = tiers.selectAll("g")
+
+var controlLabels = controls.append("text")
+                      .style("pointer-events", "none")
+                      .style("fill", "none")
+                      .style("font", "bold 10px Arial")
+                      .text(function(d) { return d.data.text })
+
+// Angle Calculation Function...
+function angle(d, offset, threshold) {
+  var a = (d.startAngle + d.endAngle) * 90 / Math.PI + offset;
+  return a > threshold ? a - 180 : a;
+}
+
 
 function expandFan () {
   fanBackground.transition()
@@ -206,6 +221,28 @@ function expandFan () {
     })
     .duration(300)
     .ease("cubic")
+    .each('end', function (d) {
+      // Add link names to the arcs, translated to the arc centroid and rotated.
+      controlLabels
+        .attr("dx", function(d) {
+          var a = angle(d, 0, 0);
+          return a < 0 ? "-16px" : "16px";
+        })
+        .attr("text-anchor", function(d) {
+          var a = angle(d, 0, 0);
+          return a < 0 ? "start" : "end";
+        })
+        .attr("transform", function(d, i, j) { //set text'ss origin to the centroid
+          //we have to make sure to set these before calling arc.centroid
+          fanArc
+            .innerRadius(fanInnerRadius)
+            .outerRadius((numberOfControlTiers - j) * fanOuterRadius)(d)
+          return "translate(" + fanArc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
+        })
+        .style("fill", "black")
+    })
+
+
 }
 
 function collapseFan () {
@@ -222,6 +259,10 @@ function collapseFan () {
     .attr("d", function(d, i, j) {
       return fanArc.innerRadius(fanInnerRadius).outerRadius(fanInnerRadius)(d)
     })
+    .each("start", function () {
+      controlLabels.style("fill", "none")
+    })
+
 }
 
 /////////////////////////////////////
@@ -274,11 +315,11 @@ d3.selectAll(".action").on("mouseenter", function () {
 
 d3.selectAll(".action").on("mouseout", function () {
   collapseFan()
-  // cancelActionPointMove()
+  cancelActionPointMove()
 })
 
 actionSelector.on("mouseover", function () {
-  // triggerActionPointMove()
+  triggerActionPointMove()
 })
 
 function triggerActionPointMove () {
