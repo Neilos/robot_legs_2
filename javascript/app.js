@@ -1,56 +1,106 @@
 var CONTROLS = {
-  innerControls: [
-    { value: 2,
-      color: "#1f77b4",
-      text: "action 7",
-      controlFn: function(){console.log("action 7")} },
-    { value: 2,
-      color: "#ff7f0e",
-      text: "action 8",
-      controlFn: function(){console.log("action 8")} },
-    { value: 2,
-      color: "#2ca02c",
-      text: "action 9",
-      controlFn: function(){console.log("action 9")} },
-    { value: 2,
-      color: "#d62728",
-      text: "action 10",
-      controlFn: function(){console.log("action 10")} },
-    { value: 2,
-      color: "#9467bd",
-      text: "action 12",
-      controlFn: function(){console.log("action 11")} }
-  ],
-  outerControls: [
+  options: [
     { value: 1,
-      color: "none",
-      text: "",
-      controlFn: function(){console.log("action 1")} },
+      type: "click",
+      color: "black",
+      text: "click",
+      commands: [
+        { value: 1,
+          type: "click",
+          color: "#1f77b4",
+          text: "once",
+          controlFn: function(){console.log("click once")} },
+        { value: 1,
+          type: "click",
+          color: "#ff7f0e",
+          text: "continuous",
+          commands: [
+            { value: 1,
+              type: "click",
+              color: "#1f77b4",
+              text: "cancel clicking",
+              controlFn: function(){console.log("cancel continuous clicking")} },
+          ],
+          controlFn: function(){console.log("continuous clicking")} }
+      ],
+      controlFn: function(){console.log("click")} },
     { value: 1,
       color: "#1f77b4",
-      text: "action 2",
-      controlFn: function(){console.log("action 2")} },
-    { value: 2,
+      type: "scroll",
+      text: "scroll",
+      commands: [
+        { value: 1,
+          type: "scroll",
+          color: "#1f77b4",
+          text: "up",
+          controlFn: function(){console.log("scroll up")} },
+        { value: 1,
+          type: "scroll",
+          color: "#ff7f0e",
+          text: "down",
+          controlFn: function(){console.log("scroll down")} },
+        { value: 1,
+          type: "scroll",
+          color: "#ff7f0e",
+          text: "left",
+          controlFn: function(){console.log("scroll left")} },
+        { value: 1,
+          type: "scroll",
+          color: "#ff7f0e",
+          text: "right",
+          controlFn: function(){console.log("scroll right")} }
+      ],
+      controlFn: function(){console.log("scroll")} },
+    { value: 1,
+      type: "zoom",
       color: "#ff7f0e",
-      text: "action 3",
-      controlFn: function(){console.log("action 3")} },
-    { value: 2,
+      text: "zoom",
+      commands: [
+        { value: 1,
+          type: "zoom",
+          color: "#1f77b4",
+          text: "in",
+          controlFn: function(){console.log("zoom in")} },
+        { value: 1,
+          type: "zoom",
+          color: "#ff7f0e",
+          text: "out",
+          controlFn: function(){console.log("zoom out")} }
+      ],
+      controlFn: function(){console.log("zoom")} },
+    { value: 1,
+      type: "navigation",
       color: "#2ca02c",
-      text: "action 4",
-      controlFn: function(){console.log("action 4")} },
-    { value: 2,
-      color: "#d62728",
-      text: "action 5",
-      controlFn: function(){console.log("action 5")} },
-    { value: 2,
-      color: "#9467bd",
-      text: "action 6",
-      controlFn: function(){console.log("action 6")} }
+      text: "navigation",
+      commands: [
+        { value: 1,
+          type: "navigation",
+          color: "#1f77b4",
+          text: "back",
+          controlFn: function(){console.log("back")} },
+        { value: 1,
+          type: "navigation",
+          color: "#ff7f0e",
+          text: "forward",
+          controlFn: function(){console.log("forward")} },
+        { value: 1,
+          type: "navigation",
+          color: "#ff7f0e",
+          text: "home",
+          controlFn: function(){console.log("home")} },
+        { value: 1,
+          type: "navigation",
+          color: "#ff7f0e",
+          text: "refresh",
+          controlFn: function(){console.log("refresh")} }
+      ],
+      controlFn: function(){console.log("navigation")} }
   ]
 };
 
 var svg = d3.select("body")
             .append('svg')
+              .classed({"overlay": true})
               .attr("width", "100%")
               .attr("height", "100%")
               .style("position", "fixed")
@@ -63,7 +113,7 @@ var height = svg[0][0].clientHeight
 var screenCenterX = width / 2
 var screenCenterY = height / 2
 var strokeWidth = 2
-var tierBreadth = 80
+var tierBreadth = 120
 var radius = 40
 // var tierBreadth = radius + 2 * tierBreadth
 // var radius = radius + tierBreadth
@@ -165,6 +215,8 @@ function update (controlData) {
             .endAngle(0)
             .sort(null)
 
+  var color = d3.scale.category10()
+
   var fanArc = d3.svg.arc()
 
   var tiers = action.selectAll("g.tier")
@@ -175,30 +227,40 @@ function update (controlData) {
   var controls = tiers.selectAll("g")
                     .data(function (d) { return pie(d) })
 
-  var controlsEnter = controls.enter().append("g").classed({"control": true})
+  var controlsEnter = controls
+                        .enter()
+                        .append("g")
+
+  controls
+    .classed({"control": true})
+    .on("mouseenter", function (d) {
+      console.log("mouseenter control")
+      if (typeof d.data.controlFn === 'function') {
+        d.data.controlFn.call()
+      }
+      if (d.data.commands) {
+        controlData.commands = d.data.commands
+        update(controlData)
+      }
+    })
+
   controlsEnter.append("path").classed({"fan": true})
   controlsEnter.append("text").classed({"control-label": true})
 
   var fans = controls.select("path.fan")
+
   fans
     .style("stroke", "#ddd")
     .style("stroke-width", strokeWidth)
-    .attr("fill", function(d, i) { return d.data.color })
-    .style("opacity", 0.5)
+    .attr("fill", function(d, i) { return color(d.data.type) })
     .attr("d", function(d, i, j) {
-      return fanArc.innerRadius(radius).outerRadius(radius)(d)
+      return (
+        fanArc
+          .innerRadius(j * tierBreadth + radius)
+          .outerRadius((j + 1) * tierBreadth + radius)(d)
+      )
     })
-    .on("mouseenter", function (d) {
-      d.data.controlFn.call()
-    })
-    .transition()
-      .duration(300)
-      .ease("cubic")
-      .attr("d", function(d, i, j) {
-        return fanArc
-                  .innerRadius(j * tierBreadth + radius)
-                  .outerRadius((j + 1) * tierBreadth + radius)(d)
-      })
+    .style("opacity", 0.9)
 
   var controlLabels = controls.select("text.control-label")
   controlLabels
@@ -208,7 +270,7 @@ function update (controlData) {
     .style("font", "bold 10px Arial")
     .attr("dx", function(d) {
       var a = angle(d, 0, 0);
-      return a < 0 ? "-16px" : "16px";
+      return a < 0 ? "-20px" : "20px";
     })
     .attr("text-anchor", function(d) {
       var a = angle(d, 0, 0);
@@ -222,10 +284,7 @@ function update (controlData) {
       return "translate(" + fanArc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
     })
     .style("fill", "black")
-    .transition()
-      .delay(300)
-      .duration(0)
-      .text(function (d) { return d.data.text })
+    .text(function (d) { return d.data.text })
 
   controls.exit().remove()
 }
@@ -281,9 +340,20 @@ function arcAngleTween (transition, newAngle) {
 }
 
 var actionSelector = action.append("circle")
-                      .classed({"action": true})
+                      .classed({"actionSelector": true})
                       .attr("r", radius)
                       .style("opacity", 0)
+
+actionSelector.on("mouseleave", function () {
+  update({controls: [], options: []})
+  // cancelActionPointMove()
+})
+
+actionSelector.on("mouseenter", function () {
+  delete CONTROLS.commands
+  update(CONTROLS)
+  // triggerActionPointMove()
+})
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
@@ -301,16 +371,6 @@ var timerForeground = action.append("path")
                           .attr("d", foregroundArc)
 
 /////////////////////////////////////
-
-action.on("mouseout", function () {
-  update({innerControls: [], outerControls: []})
-  // cancelActionPointMove()
-})
-
-action.on("mouseenter", function () {
-  update(CONTROLS)
-  // triggerActionPointMove()
-})
 
 function triggerActionPointMove () {
   timerForeground.datum({endAngle: 0})
