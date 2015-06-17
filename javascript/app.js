@@ -250,13 +250,16 @@ function update (controlData) {
   controls
     .classed({"control": true})
     .on("mouseenter", function (d) {
-      console.log("mouseenter control")
+      console.log("enter .control")
       if (typeof d.data.controlFn === 'function') {
         d.data.controlFn.call()
       }
       if (d.data.commands) {
         controlData.commands = d.data.commands
       }
+    })
+    .on("mouseleave", function (d) {
+      console.log("leave .control")
     })
 
   controlsEnter.append("path").classed({"fan": true})
@@ -360,13 +363,13 @@ var actionSelector = action.append("circle")
                       .style("opacity", 0)
 
 d3.selectAll(".action").on("mouseleave", function () {
-  console.log("mouseleave .action")
+  console.log("leave .action")
   update({controls: [], options: []})
   // cancelActionPointMove()
 })
 
 d3.selectAll(".action").on("mouseenter", function () {
-  console.log("mouseenter .action")
+  console.log("enter .action")
   update(controlDataBase())
   // triggerActionPointMove()
 })
