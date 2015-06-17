@@ -33,6 +33,12 @@ var moveAction = (function () {
       update(controlDataEmpty())
     })
 
+    progressMeterBackground
+      .style("fill", color("move"))
+
+    progressMeterForeground
+      .style("fill", progressMeter.baseColor)
+
     d3.selectAll(".action").on("mouseenter", triggerActionPointFix)
     d3.selectAll(".action").on("mouseleave", cancelActionPointFix)
   }
