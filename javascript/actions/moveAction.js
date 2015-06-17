@@ -50,7 +50,7 @@ var moveAction = (function () {
         .ease("linear")
         .duration(userSelectionTime)
         .call(arcAngleTween, -angle._360)
-        .each('end', fixActionPoint);
+        .each('end', resetAction.execute);
   }
 
   var cancelActionPointFix = function () {
@@ -58,12 +58,6 @@ var moveAction = (function () {
       .transition()
         .duration(animateDuration / 2)
         .call(arcAngleTween, 0)
-  }
-
-  var fixActionPoint = function () {
-    d3.select("html").on("mousemove", null)
-    d3.selectAll(".action").on("mouseenter", showControlsAction.execute)
-    d3.selectAll(".action").on("mouseleave", resetAction.execute)
   }
 
   return {

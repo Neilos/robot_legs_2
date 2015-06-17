@@ -28,10 +28,6 @@ var actionSelector = action.append("circle")
                       .attr("r", radius)
                       .style("opacity", 0)
 
-d3.selectAll(".action").on("mouseenter", showControlsAction.execute)
-d3.selectAll(".action").on("mouseleave", resetAction.execute)
-
-
 var progressMeterBackground = action.append("path")
                           .datum({endAngle: angle._360})
                           .style("pointer-events", "none")
@@ -121,3 +117,5 @@ feMerge2.append("feMergeNode")
 /////////////////// initialize ////////////////////////
 
 update(controlDataEmpty())
+resetAction.execute()
+
