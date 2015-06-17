@@ -1,4 +1,4 @@
-var CONTROLS = {
+var controlData = {
   options: [
     { value: 1,
       type: "move",
@@ -107,7 +107,13 @@ var radius = 40
 // var radius = radius + tierBreadth
 var progressIndicatorBreadth = 5
 var innerRadius = radius - progressIndicatorBreadth
-var circle360 = 2 * Math.PI
+var circle = {
+  "_90": Math.PI / 2,
+  "_180": Math.PI,
+  "_270": Math.PI * (3/2),
+  "_360": Math.PI * 2
+}
+
 var userSelectionTime = 1500
 var animateDuration = 300
 var fanAngle = Math.PI / 20
@@ -152,20 +158,41 @@ feMerge.append("feMergeNode")
 
 ////////////////////////////////////////////////
 
-var currentAngle = 0
+var currentStartAngle = 0
+var currentEndAngle = 0
 
 var moveActionPoint = function () {
   d3.select("html").on("mousemove", function () {
     var x = d3.event.clientX
     var y = d3.event.clientY
 
-    if (x > screenCenterX) {
-      currentAngle = (y > screenCenterY) ? 0 : 270
-    } else {
-      currentAngle = (y > screenCenterY) ? 90 : 180
-    }
+    delete controlData.commands
 
-    action.attr("transform", "translate(" + x + "," + y + ") rotate(" + currentAngle + ")")
+    if (screenCenterX < x) {
+      if (screenCenterY < y) {
+        currentStartAngle = circle._270
+        currentEndAngle = circle._360
+      } else {
+        currentStartAngle = circle._180
+        currentEndAngle = circle._270
+      }
+    } else {
+      if (screenCenterY < y) {
+        currentStartAngle = 0
+        currentEndAngle = circle._90
+      } else {
+        currentStartAngle = circle._90
+        currentEndAngle = circle._180
+      }
+    }
+    pie.startAngle(currentStartAngle).endAngle(currentEndAngle)
+    update()
+
+    action.transition()
+      .duration(500)
+      .ease("linear")
+      .delay(100)
+      .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")
   })
 }
 
@@ -180,32 +207,29 @@ var action = svg.append("g")
 
 action.append("path").classed({"fanBackground": true})
 
-function update (controlData) {
+var pie = d3.layout.pie()
+            .value(function(d) { return d.value })
+            .sort(null)
+            .startAngle(0)
+            .endAngle(circle._90)
 
+var fanArc = d3.svg.arc()
+
+var color = d3.scale.category10()
+
+function update () {
   var numberOfControlTiers = d3.values(controlData).length
-
-  var fanBreadth = 80
 
   var fanBackground = action.select("path.fanBackground")
                             .attr("d", d3.svg.arc()
                                         .innerRadius(radius)
-                                        .outerRadius(radius)
-                                        .startAngle(-(90/180) * Math.PI)
-                                        .endAngle(0)
+                                        .outerRadius(radius + 10)
+                                        .startAngle(currentStartAngle)
+                                        .endAngle(currentEndAngle)
                             )
                             .classed({"fanBackground": true, "action": true})
                             .style("fill", "#ddd")
                             .style("filter", "url(#drop-shadow)")
-
-  var pie = d3.layout.pie()
-            .value(function(d) { return d.value })
-            .startAngle(-(90/180) * Math.PI)
-            .endAngle(0)
-            .sort(null)
-
-  var color = d3.scale.category10()
-
-  var fanArc = d3.svg.arc()
 
   var tiers = action.selectAll("g.tier")
     .data(d3.values(controlData))
@@ -217,7 +241,7 @@ function update (controlData) {
 
   var controlsEnter = controls
                         .enter()
-                        .append("g")
+                         .append("g")
 
   controls
     .classed({"control": true})
@@ -228,7 +252,6 @@ function update (controlData) {
       }
       if (d.data.commands) {
         controlData.commands = d.data.commands
-        update(controlData)
       }
     })
 
@@ -258,7 +281,7 @@ function update (controlData) {
     .style("font", "bold 10px Arial")
     .attr("dx", function(d) {
       var a = angle(d, 0, 0);
-      return a < 0 ? "-20px" : "20px";
+      return a < 0 ? "-0px" : "0px";
     })
     .attr("text-anchor", function(d) {
       var a = angle(d, 0, 0);
@@ -269,7 +292,7 @@ function update (controlData) {
       fanArc
         .innerRadius(j * tierBreadth + radius)
         .outerRadius((j + 1) * tierBreadth + radius)(d)
-      return "translate(" + fanArc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
+      return "translate(" + fanArc.centroid(d) + ") rotate(" + angle(d, -90, 90) + ")";
     })
     .style("fill", "black")
     .text(function (d) { return d.data.text })
@@ -338,14 +361,14 @@ actionSelector.on("mouseleave", function () {
 })
 
 actionSelector.on("mouseenter", function () {
-  delete CONTROLS.commands
-  update(CONTROLS)
-  // triggerActionPointMove()
+  delete controlData.commands
+  update()
+  triggerActionPointMove()
 })
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
-                          .datum({endAngle: circle360})
+                          .datum({endAngle: circle._360})
                           .style("pointer-events", "none")
                           .style("fill", "#ddd")
                           .attr("d", backgroundArc)
@@ -365,7 +388,7 @@ function triggerActionPointMove () {
     .transition()
       .ease("linear")
       .duration(userSelectionTime)
-      .call(arcAngleTween, circle360)
+      .call(arcAngleTween, circle._360)
       .each('end', moveActionPoint);
 }
 
