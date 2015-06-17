@@ -1,6 +1,10 @@
 var CONTROLS = {
   options: [
     { value: 1,
+      type: "move",
+      text: "move",
+      controlFn: function(){console.log("move")} },
+    { value: 1,
       type: "click",
       text: "click",
       commands: [
