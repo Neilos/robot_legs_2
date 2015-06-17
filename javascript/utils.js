@@ -1,5 +1,5 @@
 // Angle Calculation Function...
-function angle(d, offset, threshold) {
+function textAngle(d, offset, threshold) {
   var a = (d.startAngle + d.endAngle) * 90 / Math.PI + offset;
   return a > threshold ? a - 180 : a;
 }

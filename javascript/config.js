@@ -8,7 +8,7 @@ var radius = 60
 // var radius = radius + tierBreadth
 var progressIndicatorBreadth = 5
 var innerRadius = radius - progressIndicatorBreadth
-var circle = {
+var angle = {
   "_90": Math.PI / 2,
   "_180": Math.PI,
   "_270": Math.PI * (3/2),
@@ -20,7 +20,7 @@ var animateDuration = 300
 var fanAngle = Math.PI / 20
 
 var currentStartAngle = 0
-var currentEndAngle = circle._90
+var currentEndAngle = angle._90
 
 var color = d3.scale.category10()
 
@@ -28,7 +28,7 @@ var pie = d3.layout.pie()
             .value(function(d) { return d.value })
             .sort(null)
             .startAngle(0)
-            .endAngle(circle._90)
+            .endAngle(angle._90)
 
 var fanArc = d3.svg.arc()
 

@@ -41,7 +41,7 @@ d3.selectAll(".action").on("mouseleave", function () {
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
-                          .datum({endAngle: circle._360})
+                          .datum({endAngle: angle._360})
                           .style("pointer-events", "none")
                           .style("fill", "#ddd")
                           .attr("d", backgroundArc)

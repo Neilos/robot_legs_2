@@ -7,21 +7,22 @@ var moveAction = (function () {
 
       if (screenCenterX < x) {
         if (screenCenterY < y) {
-          currentStartAngle = circle._270
-          currentEndAngle = circle._360
+          currentStartAngle = angle._270
+          currentEndAngle = angle._360
         } else {
-          currentStartAngle = circle._180
-          currentEndAngle = circle._270
+          currentStartAngle = angle._180
+          currentEndAngle = angle._270
         }
       } else {
         if (screenCenterY < y) {
           currentStartAngle = 0
-          currentEndAngle = circle._90
+          currentEndAngle = angle._90
         } else {
-          currentStartAngle = circle._90
-          currentEndAngle = circle._180
+          currentStartAngle = angle._90
+          currentEndAngle = angle._180
         }
       }
+
       pie.startAngle(currentStartAngle).endAngle(currentEndAngle)
       action.transition()
         .duration(300)
@@ -42,7 +43,7 @@ var moveAction = (function () {
       .transition()
         .ease("linear")
         .duration(userSelectionTime)
-        .call(arcAngleTween, circle._360)
+        .call(arcAngleTween, angle._360)
         .each('end', fixActionPoint);
   }
 
