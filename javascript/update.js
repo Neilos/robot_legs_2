@@ -11,13 +11,15 @@ var update = function (controlData) {
                                     .startAngle(currentStartAngle)
                                     .endAngle(currentEndAngle)
                             )
-                            .style("fill", "#ddd")
+                            .style("fill", baseColor)
                             .style("filter", "url(#drop-shadow2)")
 
   var tiers = action.selectAll("g.tier")
     .data(d3.values(controlData))
 
   var tiersEnter = tiers.enter().append("g").classed({"tier": true})
+
+  tiers.exit().remove()
 
   var controls = tiers.selectAll("g")
                     .data(function (d) { return pie(d) })
@@ -26,21 +28,26 @@ var update = function (controlData) {
                         .enter()
                          .append("g")
 
-  controlsEnter
+  controls
     .classed({"control": true})
     .on("mouseenter", function (d) {
       console.log("enter .control")
+
+      actionController.activateControl(color(d.data.type))
+      update(controlData)
+
       if (typeof d.data.action !== 'undefined') {
         d.data.action.execute()
       }
+
       if (d.data.commands) {
         controlData.commands = d.data.commands
       }
+
       update(controlData)
     })
     .on("mouseleave", function (d) {
-      delete controlData.comands
-      update(controlData)
+      update(controlDataBase())
       console.log("leave .control")
     })
 
@@ -50,17 +57,17 @@ var update = function (controlData) {
   var fans = controls.select("path.fan")
 
   fans
-    .style("stroke", "#ddd")
+    .style("stroke", baseColor)
     .style("stroke-width", strokeWidth)
     .attr("fill", function(d, i) { return color(d.data.type) })
-    .attr("d", function(d, i, j) {
-      return (
-        fanArc
-          .innerRadius(j * tierBreadth + radius)
-          .outerRadius((j + 1) * tierBreadth + radius)(d)
-      )
-    })
     .style("opacity", 0.5)
+      .attr("d", function(d, i, j) {
+        return (
+          fanArc
+            .innerRadius(j * tierBreadth + radius)
+            .outerRadius((j + 1) * tierBreadth + radius)(d)
+        )
+      })
 
   var controlLabels = controls.select("text.control-label")
   controlLabels
@@ -88,4 +95,3 @@ var update = function (controlData) {
 
   controls.exit().remove()
 }
-

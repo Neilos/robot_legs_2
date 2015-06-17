@@ -24,6 +24,7 @@ var moveAction = (function () {
       }
 
       pie.startAngle(currentStartAngle).endAngle(currentEndAngle)
+
       action.transition()
         .duration(300)
         .ease("linear")
@@ -33,31 +34,28 @@ var moveAction = (function () {
       update(controlDataEmpty())
     })
 
-    progressMeterBackground
-      .style("fill", color("move"))
-
-    progressMeterForeground
-      .style("fill", progressMeter.baseColor)
-
     d3.selectAll(".action").on("mouseenter", triggerActionPointFix)
     d3.selectAll(".action").on("mouseleave", cancelActionPointFix)
   }
 
   var triggerActionPointFix = function () {
     progressMeterForeground
-      .datum({endAngle: 0})
+      .datum({endAngle: angle._360})
       .transition()
         .ease("linear")
         .duration(userSelectionTime)
-        .call(arcAngleTween, -angle._360)
-        .each('end', resetAction.execute);
+        .call(arcAngleTween, 0)
+        .each('end', function () {
+          actionController.resetEverything()
+          update(controlDataBase())
+        });
   }
 
   var cancelActionPointFix = function () {
     progressMeterForeground
       .transition()
-        .duration(animateDuration / 2)
-        .call(arcAngleTween, 0)
+        .duration(0)
+        .call(arcAngleTween, angle._360)
   }
 
   return {
