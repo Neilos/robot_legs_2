@@ -5,6 +5,7 @@ var controlDataBase = function () {
         type: "move",
         text: "move",
         selected: true,
+        commands: [],
         controlFn: function(){console.log("move")} },
       { value: 1,
         type: "click",
