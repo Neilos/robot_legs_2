@@ -128,24 +128,26 @@ var fanAngle = Math.PI / 20
 // filters go in defs element
 var defs = svg.append("defs");
 
-// create filter with id #drop-shadow
+//////////////////////////////////////////////////////
+
+// create filter with id #drop-shadow1
 // height=130% so that the shadow is not clipped
-var filter = defs.append("filter")
-    .attr("id", "drop-shadow")
+var filter1 = defs.append("filter")
+    .attr("id", "drop-shadow1")
     .attr("width", "200%")
     .attr("height", "200%")
 
 // SourceAlpha refers to opacity of graphic that this filter will be applied to
 // convolve that with a Gaussian with standard deviation 3 and store result
 // in blur
-filter.append("feGaussianBlur")
+filter1.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
     .attr("stdDeviation", 4)
     .attr("result", "blur");
 
 // translate output of Gaussian blur to the right and downwards with 2px
 // store result in offsetBlur
-filter.append("feOffset")
+filter1.append("feOffset")
     .attr("in", "blur")
     .attr("dx", 6)
     .attr("dy", 6)
@@ -153,11 +155,45 @@ filter.append("feOffset")
 
 // overlay original SourceGraphic over translated blurred opacity by using
 // feMerge filter. Order of specifying inputs is important!
-var feMerge = filter.append("feMerge");
+var feMerge1 = filter1.append("feMerge");
 
-feMerge.append("feMergeNode")
+feMerge1.append("feMergeNode")
     .attr("in", "offsetBlur")
-feMerge.append("feMergeNode")
+feMerge1.append("feMergeNode")
+    .attr("in", "SourceGraphic");
+
+//////////////////////////
+
+// create filter with id #drop-shadow1
+// height=130% so that the shadow is not clipped
+var filter2 = defs.append("filter")
+    .attr("id", "drop-shadow2")
+    .attr("width", "200%")
+    .attr("height", "200%")
+
+// SourceAlpha refers to opacity of graphic that this filter will be applied to
+// convolve that with a Gaussian with standard deviation 3 and store result
+// in blur
+filter2.append("feGaussianBlur")
+    .attr("in", "SourceAlpha")
+    .attr("stdDeviation", 3)
+    .attr("result", "blur");
+
+// translate output of Gaussian blur to the right and downwards with 2px
+// store result in offsetBlur
+filter2.append("feOffset")
+    .attr("in", "blur")
+    .attr("dx", 5)
+    .attr("dy", 5)
+    .attr("result", "offsetBlur");
+
+// overlay original SourceGraphic over translated blurred opacity by using
+// feMerge filter. Order of specifying inputs is important!
+var feMerge2 = filter2.append("feMerge");
+
+feMerge2.append("feMergeNode")
+    .attr("in", "offsetBlur")
+feMerge2.append("feMergeNode")
     .attr("in", "SourceGraphic");
 
 ////////////////////////////////////////////////
@@ -233,7 +269,7 @@ function update (controlData) {
                             )
                             .classed({"fanBackground": true})
                             .style("fill", "#ddd")
-                            .style("filter", "url(#drop-shadow)")
+                            .style("filter", "url(#drop-shadow2)")
 
   var tiers = action.selectAll("g.tier")
     .data(d3.values(controlData))
@@ -380,7 +416,7 @@ var timerBackground = action.append("path")
                           .style("pointer-events", "none")
                           .style("fill", "#ddd")
                           .attr("d", backgroundArc)
-                          .style("filter", "url(#drop-shadow)")
+                          .style("filter", "url(#drop-shadow1)")
 
 // Add the foreground arc in orange, currently 0%.
 var timerForeground = action.append("path")
