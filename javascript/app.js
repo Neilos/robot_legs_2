@@ -1,3 +1,10 @@
+var controlDataEmpty = function () {
+  return {
+    options: [],
+    commands: []
+  }
+}
+
 var controlDataBase = function () {
   return {
     options: [
@@ -6,7 +13,7 @@ var controlDataBase = function () {
         text: "move",
         selected: true,
         commands: [],
-        controlFn: function(){console.log("move")} },
+        controlFn: moveActionPoint },
       { value: 1,
         type: "click",
         text: "click",
@@ -199,14 +206,15 @@ feMerge2.append("feMergeNode")
 ////////////////////////////////////////////////
 
 var currentStartAngle = 0
-var currentEndAngle = 0
+var currentEndAngle = circle._90
 
 var moveActionPoint = function () {
+  d3.selectAll(".action").on("mouseenter", triggerActionPointFix)
+  d3.selectAll(".action").on("mouseleave", cancelActionPointFix)
+
   d3.select("html").on("mousemove", function () {
     var x = d3.event.clientX
     var y = d3.event.clientY
-
-    delete controlData.commands
 
     if (screenCenterX < x) {
       if (screenCenterY < y) {
@@ -226,13 +234,14 @@ var moveActionPoint = function () {
       }
     }
     pie.startAngle(currentStartAngle).endAngle(currentEndAngle)
-    update()
-
     action.transition()
       .duration(300)
       .ease("linear")
       .delay(100)
       .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")
+
+    update(controlDataEmpty())
+
   })
 }
 
@@ -258,16 +267,18 @@ var fanArc = d3.svg.arc()
 var color = d3.scale.category10()
 
 function update (controlData) {
-  var numberOfControlTiers = d3.values(controlData).length
+  var fanLevel = d3.values(controlData).filter(function(controls) {
+    return controls.length > 0
+  }).length
 
   var fanBackground = action.select("path.fanBackground")
-                            .attr("d", d3.svg.arc()
-                                        .innerRadius(radius)
-                                        .outerRadius(radius + 10)
-                                        .startAngle(currentStartAngle)
-                                        .endAngle(currentEndAngle)
+                            .attr("d",
+                                d3.svg.arc()
+                                    .innerRadius(radius)
+                                    .outerRadius(radius + fanLevel * tierBreadth)
+                                    .startAngle(currentStartAngle)
+                                    .endAngle(currentEndAngle)
                             )
-                            .classed({"fanBackground": true})
                             .style("fill", "#ddd")
                             .style("filter", "url(#drop-shadow2)")
 
@@ -283,7 +294,7 @@ function update (controlData) {
                         .enter()
                          .append("g")
 
-  controls
+  controlsEnter
     .classed({"control": true})
     .on("mouseenter", function (d) {
       console.log("enter .control")
@@ -293,8 +304,11 @@ function update (controlData) {
       if (d.data.commands) {
         controlData.commands = d.data.commands
       }
+      update(controlData)
     })
     .on("mouseleave", function (d) {
+      delete controlData.comands
+      update(controlData)
       console.log("leave .control")
     })
 
@@ -314,7 +328,7 @@ function update (controlData) {
           .outerRadius((j + 1) * tierBreadth + radius)(d)
       )
     })
-    .style("opacity", 0.9)
+    .style("opacity", 0.5)
 
   var controlLabels = controls.select("text.control-label")
   controlLabels
@@ -324,7 +338,7 @@ function update (controlData) {
     .style("font", "bold 10px Arial")
     .attr("dx", function(d) {
       var a = angle(d, 0, 0);
-      return a < 0 ? "-0px" : "0px";
+      return a < 0 ? "-10px" : "10px";
     })
     .attr("text-anchor", function(d) {
       var a = angle(d, 0, 0);
@@ -398,17 +412,18 @@ var actionSelector = action.append("circle")
                       .attr("r", radius)
                       .style("opacity", 0)
 
-d3.selectAll(".action").on("mouseleave", function () {
-  console.log("leave .action")
-  update({controls: [], options: []})
-  // cancelActionPointMove()
-})
-
 d3.selectAll(".action").on("mouseenter", function () {
   console.log("enter .action")
   update(controlDataBase())
-  // triggerActionPointMove()
 })
+
+d3.selectAll(".action").on("mouseleave", function () {
+  console.log("leave .action")
+  update(controlDataEmpty())
+  // cancelActionPointMove()
+})
+
+update(controlDataEmpty())
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
@@ -427,16 +442,29 @@ var timerForeground = action.append("path")
 
 /////////////////////////////////////
 
-function triggerActionPointMove () {
+function fixActionPoint () {
+  console.log("fixActionPoint")
+  d3.select("html").on("mousemove", null)
+
+  d3.selectAll(".action").on("mouseenter", function () {
+    update(controlDataBase())
+  })
+
+  d3.selectAll(".action").on("mouseleave", function () {
+    update(controlDataEmpty())
+  })
+}
+
+function triggerActionPointFix () {
   timerForeground.datum({endAngle: 0})
     .transition()
       .ease("linear")
       .duration(userSelectionTime)
       .call(arcAngleTween, circle._360)
-      .each('end', moveActionPoint);
+      .each('end', fixActionPoint);
 }
 
-function cancelActionPointMove () {
+function cancelActionPointFix () {
   timerForeground
     .transition()
       .duration(animateDuration)
