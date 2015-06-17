@@ -193,7 +193,7 @@ var moveActionPoint = function () {
     update()
 
     action.transition()
-      .duration(500)
+      .duration(300)
       .ease("linear")
       .delay(100)
       .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")
