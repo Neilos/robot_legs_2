@@ -4,10 +4,15 @@
 var strokeWidth = 2
 var tierBreadth = 80
 var radius = 60
-// var tierBreadth = radius + 2 * tierBreadth
-// var radius = radius + tierBreadth
-var progressIndicatorBreadth = 5
-var innerRadius = radius - progressIndicatorBreadth
+var innerRadius = radius - 6
+
+var progressMeter = {
+  baseColor: "#ddd",
+  color: "brown",
+  backgroundArc: d3.svg.arc().outerRadius(radius).innerRadius(innerRadius).startAngle(0),
+  arc: d3.svg.arc().outerRadius(radius).innerRadius(innerRadius).startAngle(0)
+}
+
 var angle = {
   "_90": Math.PI / 2,
   "_180": Math.PI,
@@ -31,14 +36,4 @@ var pie = d3.layout.pie()
             .endAngle(angle._90)
 
 var fanArc = d3.svg.arc()
-
-var backgroundArc = d3.svg.arc()
-      .outerRadius(radius)
-      .innerRadius(innerRadius)
-      .startAngle(0)
-
-var foregroundArc = d3.svg.arc()
-      .outerRadius(radius)
-      .innerRadius(innerRadius)
-      .startAngle(0)
 

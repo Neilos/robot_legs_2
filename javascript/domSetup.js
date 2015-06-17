@@ -31,20 +31,19 @@ var actionSelector = action.append("circle")
 d3.selectAll(".action").on("mouseenter", showControlsAction.execute)
 d3.selectAll(".action").on("mouseleave", resetAction.execute)
 
-// Add the background arc, from 0 to 100% (τ).
-var timerBackground = action.append("path")
+
+var progressMeterBackground = action.append("path")
                           .datum({endAngle: angle._360})
                           .style("pointer-events", "none")
-                          .style("fill", "#ddd")
-                          .attr("d", backgroundArc)
+                          .style("fill", progressMeter.baseColor)
+                          .attr("d", progressMeter.backgroundArc)
                           .style("filter", "url(#drop-shadow1)")
 
-// Add the foreground arc in orange, currently 0%.
-var timerForeground = action.append("path")
+var progressMeterForeground = action.append("path")
                           .datum({endAngle: 0})
                           .style("pointer-events", "none")
-                          .style("fill", "#ad494a")
-                          .attr("d", foregroundArc)
+                          .style("fill", progressMeter.color)
+                          .attr("d", progressMeter.arc)
 
 ///////////////////////////////////////////////////////
 /////////////////// definitions ///////////////////////

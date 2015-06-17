@@ -31,7 +31,6 @@ var moveAction = (function () {
         .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")
 
       update(controlDataEmpty())
-
     })
 
     d3.selectAll(".action").on("mouseenter", triggerActionPointFix)
@@ -39,18 +38,19 @@ var moveAction = (function () {
   }
 
   var triggerActionPointFix = function () {
-    timerForeground.datum({endAngle: 0})
+    progressMeterForeground
+      .datum({endAngle: 0})
       .transition()
         .ease("linear")
         .duration(userSelectionTime)
-        .call(arcAngleTween, angle._360)
+        .call(arcAngleTween, -angle._360)
         .each('end', fixActionPoint);
   }
 
   var cancelActionPointFix = function () {
-    timerForeground
+    progressMeterForeground
       .transition()
-        .duration(animateDuration)
+        .duration(animateDuration / 2)
         .call(arcAngleTween, 0)
   }
 

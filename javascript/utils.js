@@ -31,7 +31,7 @@ var arcAngleTween = function (transition, newAngle) {
     var interpolate = d3.interpolate(d.endAngle, newAngle);
     return function (t) {
       d.endAngle = interpolate(t);
-      return foregroundArc(d);
+      return progressMeter.arc(d);
     };
   });
 }
