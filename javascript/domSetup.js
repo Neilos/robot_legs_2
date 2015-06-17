@@ -28,16 +28,8 @@ var actionSelector = action.append("circle")
                       .attr("r", radius)
                       .style("opacity", 0)
 
-d3.selectAll(".action").on("mouseenter", function () {
-  console.log("enter .action")
-  update(controlDataBase())
-})
-
-d3.selectAll(".action").on("mouseleave", function () {
-  console.log("leave .action")
-  update(controlDataEmpty())
-  // cancelActionPointMove()
-})
+d3.selectAll(".action").on("mouseenter", showControlsAction.execute)
+d3.selectAll(".action").on("mouseleave", resetAction.execute)
 
 // Add the background arc, from 0 to 100% (τ).
 var timerBackground = action.append("path")
