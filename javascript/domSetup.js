@@ -117,3 +117,8 @@ feMerge2.append("feMergeNode")
 feMerge2.append("feMergeNode")
     .attr("in", "SourceGraphic");
 
+
+///////////////////////////////////////////////////////
+/////////////////// initialize ////////////////////////
+
+update(controlDataEmpty())

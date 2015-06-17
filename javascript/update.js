@@ -89,5 +89,3 @@ var update = function (controlData) {
   controls.exit().remove()
 }
 
-
-update(controlDataEmpty())
