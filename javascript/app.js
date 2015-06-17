@@ -1,89 +1,92 @@
-var controlData = {
-  options: [
-    { value: 1,
-      type: "move",
-      text: "move",
-      controlFn: function(){console.log("move")} },
-    { value: 1,
-      type: "click",
-      text: "click",
-      commands: [
-        { value: 1,
-          type: "click",
-          text: "once",
-          controlFn: function(){console.log("click once")} },
-        { value: 1,
-          type: "click",
-          text: "continuous",
-          commands: [
-            { value: 1,
-              type: "click",
-              color: "#1f77b4",
-              text: "cancel clicking",
-              controlFn: function(){console.log("cancel continuous clicking")} },
-          ],
-          controlFn: function(){console.log("continuous clicking")} }
-      ],
-      controlFn: function(){console.log("click")} },
-    { value: 1,
-      type: "scroll",
-      text: "scroll",
-      commands: [
-        { value: 1,
-          type: "scroll",
-          text: "up",
-          controlFn: function(){console.log("scroll up")} },
-        { value: 1,
-          type: "scroll",
-          text: "down",
-          controlFn: function(){console.log("scroll down")} },
-        { value: 1,
-          type: "scroll",
-          text: "left",
-          controlFn: function(){console.log("scroll left")} },
-        { value: 1,
-          type: "scroll",
-          text: "right",
-          controlFn: function(){console.log("scroll right")} }
-      ],
-      controlFn: function(){console.log("scroll")} },
-    { value: 1,
-      type: "zoom",
-      text: "zoom",
-      commands: [
-        { value: 1,
-          type: "zoom",
-          text: "in",
-          controlFn: function(){console.log("zoom in")} },
-        { value: 1,
-          type: "zoom",
-          text: "out",
-          controlFn: function(){console.log("zoom out")} }
-      ],
-      controlFn: function(){console.log("zoom")} },
-    { value: 1,
-      type: "navigation",
-      text: "navigation",
-      commands: [
-        { value: 1,
-          type: "navigation",
-          text: "back",
-          controlFn: function(){console.log("back")} },
-        { value: 1,
-          type: "navigation",
-          text: "forward",
-          controlFn: function(){console.log("forward")} },
-        { value: 1,
-          type: "navigation",
-          text: "home",
-          controlFn: function(){console.log("home")} },
-        { value: 1,
-          type: "navigation",
-          text: "refresh",
-          controlFn: function(){console.log("refresh")} }
-      ],
-      controlFn: function(){console.log("navigation")} }
-  ]
+var controlDataBase = function () {
+  return {
+    options: [
+      { value: 1,
+        type: "move",
+        text: "move",
+        selected: true,
+        controlFn: function(){console.log("move")} },
+      { value: 1,
+        type: "click",
+        text: "click",
+        commands: [
+          { value: 1,
+            type: "click",
+            text: "once",
+            controlFn: function(){console.log("click once")} },
+          { value: 1,
+            type: "click",
+            text: "continuous",
+            commands: [
+              { value: 1,
+                type: "click",
+                color: "#1f77b4",
+                text: "cancel clicking",
+                controlFn: function(){console.log("cancel continuous clicking")} },
+            ],
+            controlFn: function(){console.log("continuous clicking")} }
+        ],
+        controlFn: function(){console.log("click")} },
+      { value: 1,
+        type: "scroll",
+        text: "scroll",
+        commands: [
+          { value: 1,
+            type: "scroll",
+            text: "up",
+            controlFn: function(){console.log("scroll up")} },
+          { value: 1,
+            type: "scroll",
+            text: "down",
+            controlFn: function(){console.log("scroll down")} },
+          { value: 1,
+            type: "scroll",
+            text: "left",
+            controlFn: function(){console.log("scroll left")} },
+          { value: 1,
+            type: "scroll",
+            text: "right",
+            controlFn: function(){console.log("scroll right")} }
+        ],
+        controlFn: function(){console.log("scroll")} },
+      { value: 1,
+        type: "zoom",
+        text: "zoom",
+        commands: [
+          { value: 1,
+            type: "zoom",
+            text: "in",
+            controlFn: function(){console.log("zoom in")} },
+          { value: 1,
+            type: "zoom",
+            text: "out",
+            controlFn: function(){console.log("zoom out")} }
+        ],
+        controlFn: function(){console.log("zoom")} },
+      { value: 1,
+        type: "navigation",
+        text: "navigation",
+        commands: [
+          { value: 1,
+            type: "navigation",
+            text: "back",
+            controlFn: function(){console.log("back")} },
+          { value: 1,
+            type: "navigation",
+            text: "forward",
+            controlFn: function(){console.log("forward")} },
+          { value: 1,
+            type: "navigation",
+            text: "home",
+            controlFn: function(){console.log("home")} },
+          { value: 1,
+            type: "navigation",
+            text: "refresh",
+            controlFn: function(){console.log("refresh")} }
+        ],
+        controlFn: function(){console.log("navigation")} }
+    ]
+  }
 };
 
 var svg = d3.select("body")
@@ -217,7 +220,7 @@ var fanArc = d3.svg.arc()
 
 var color = d3.scale.category10()
 
-function update () {
+function update (controlData) {
   var numberOfControlTiers = d3.values(controlData).length
 
   var fanBackground = action.select("path.fanBackground")
@@ -227,7 +230,7 @@ function update () {
                                         .startAngle(currentStartAngle)
                                         .endAngle(currentEndAngle)
                             )
-                            .classed({"fanBackground": true, "action": true})
+                            .classed({"fanBackground": true})
                             .style("fill", "#ddd")
                             .style("filter", "url(#drop-shadow)")
 
@@ -355,15 +358,16 @@ var actionSelector = action.append("circle")
                       .attr("r", radius)
                       .style("opacity", 0)
 
-actionSelector.on("mouseleave", function () {
+d3.selectAll(".action").on("mouseleave", function () {
+  console.log("mouseleave .action")
   update({controls: [], options: []})
   // cancelActionPointMove()
 })
 
-actionSelector.on("mouseenter", function () {
-  delete controlData.commands
-  update()
-  triggerActionPointMove()
+d3.selectAll(".action").on("mouseenter", function () {
+  console.log("mouseenter .action")
+  update(controlDataBase())
+  // triggerActionPointMove()
 })
 
 // Add the background arc, from 0 to 100% (τ).
