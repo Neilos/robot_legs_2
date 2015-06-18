@@ -2,7 +2,7 @@
 /////////////////// global config /////////////////////
 
 var strokeWidth = 3
-var tierBreadth = 80
+var tierBreadth = 70
 var radius = 60
 var progressMeterOuterRadius = radius + strokeWidth / 2
 var innerRadius = radius - 10
