@@ -1,6 +1,10 @@
 ///////////////////////////////////////////////////////
 /////////////////// dom related setup /////////////////
 
+var audio = d3.select("body")
+              .append("span")
+              .attr("id", "sound")
+
 var svg = d3.select("body")
             .append('svg')
               .classed({"overlay": true})

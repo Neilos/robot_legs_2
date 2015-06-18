@@ -13,6 +13,7 @@ var clickAction = (function () {
         .duration(clickDuration)
         .attr("d", progressMeter.clickArc)
         .each('end', function () {
+          playSound("button-16.mp3")
           console.log("click once")
         })
       .transition()

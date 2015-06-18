@@ -36,3 +36,8 @@ var arcAngleTween = function (transition, newAngle) {
   });
 }
 
+
+var playSound = function (soundfile) {
+  document.getElementById("sound").innerHTML=
+    "<embed src=\"" + soundfile + "\" hidden=\"true\" autostart=\"true\" loop=\"false\" />";
+}
