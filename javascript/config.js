@@ -1,17 +1,18 @@
 ///////////////////////////////////////////////////////
 /////////////////// global config /////////////////////
 
-var strokeWidth = 1
+var strokeWidth = 3
 var tierBreadth = 80
 var radius = 60
-var innerRadius = radius - 10
+var progressMeterOuterRadius = radius + strokeWidth / 2
+var innerRadius = radius - 12
 var baseColor = "#ccc"
 
 var progressMeter = {
   baseColor: baseColor,
   color: "brown",
-  backgroundArc: d3.svg.arc().outerRadius(radius).innerRadius(innerRadius).startAngle(0),
-  arc: d3.svg.arc().outerRadius(radius - strokeWidth).innerRadius(innerRadius + strokeWidth).startAngle(0)
+  backgroundArc: d3.svg.arc().outerRadius(progressMeterOuterRadius).innerRadius(innerRadius).startAngle(0),
+  arc: d3.svg.arc().outerRadius(progressMeterOuterRadius - strokeWidth).innerRadius(innerRadius + strokeWidth).startAngle(0)
 }
 
 var angle = {

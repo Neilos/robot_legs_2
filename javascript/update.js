@@ -12,6 +12,8 @@ var update = function (controlData) {
                                     .endAngle(currentEndAngle)
                             )
                             .style("fill", baseColor)
+                            .style("stroke", baseColor)
+                            .style("stroke-width", strokeWidth)
                             .style("filter", "url(#drop-shadow2)")
 
   var tiers = action.selectAll("g.tier")
