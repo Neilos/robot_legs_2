@@ -31,12 +31,6 @@ var actionController = {
       actionController.resetControl()
       update(controlDataEmpty())
     })
-
-    d3.selectAll("g.control")
-      .on("mouseenter", null)
-      .on("mouseleave", null)
-
-    update(controlDataBase())
   }
 
 }
