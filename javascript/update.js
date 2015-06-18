@@ -23,7 +23,7 @@ var update = function (controlData) {
 
   tiers.exit().remove()
 
-  var controls = tiers.selectAll("g")
+  var controls = tiers.selectAll("g.control")
                     .data(function (d) { return pie(d) })
 
   var controlsEnter = controls
