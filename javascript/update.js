@@ -46,10 +46,6 @@ var update = function (controlData) {
 
       update(controlData)
     })
-    .on("mouseleave", function (d) {
-      update(controlDataBase())
-      console.log("leave .control")
-    })
 
   controlsEnter.append("path").classed({"fan": true})
   controlsEnter.append("text").classed({"control-label": true})
