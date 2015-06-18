@@ -5,8 +5,8 @@ var strokeWidth = 3
 var tierBreadth = 80
 var radius = 60
 var progressMeterOuterRadius = radius + strokeWidth / 2
-var innerRadius = radius - 12
-var baseColor = "#ccc"
+var innerRadius = radius - 10
+var baseColor = "#ddd"
 
 var progressMeter = {
   baseColor: baseColor,

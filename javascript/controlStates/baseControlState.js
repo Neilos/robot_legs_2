@@ -4,7 +4,6 @@ var controlDataBase = function () {
       { value: 1,
         type: "move",
         text: "move",
-        selected: true,
         commands: [],
         action: moveAction },
       { value: 1,
