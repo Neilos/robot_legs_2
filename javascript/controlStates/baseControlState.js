@@ -64,27 +64,27 @@ var controlDataBase = function () {
         ],
         action: { execute: function(){console.log("zoom")}  }},
       { value: 1,
-        type: "navigation",
-        text: "navigation",
+        type: "navigate",
+        text: "navigate",
         commands: [
           { value: 1,
-            type: "navigation",
+            type: "navigate",
             text: "back",
             action: { execute: function(){console.log("back")}  }},
           { value: 1,
-            type: "navigation",
+            type: "navigate",
             text: "forward",
             action: { execute: function(){console.log("forward")}  }},
           { value: 1,
-            type: "navigation",
+            type: "navigate",
             text: "home",
             action: { execute: function(){console.log("home")}  }},
           { value: 1,
-            type: "navigation",
+            type: "navigate",
             text: "refresh",
             action: { execute: function(){console.log("refresh")} } }
         ],
-        action: { execute: function(){console.log("navigation")} } }
+        action: { execute: function(){console.log("navigate")} } }
     ]
   }
 };
