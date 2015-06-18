@@ -1,7 +1,7 @@
 var actionController = {
 
   activateControl: function (color) {
-    progressMeterForeground
+    d3.select(".progressMeterForeground")
       .style("fill", color)
       .datum({startAngle: 0, endAngle: angle._360})
       .transition()
@@ -10,8 +10,9 @@ var actionController = {
   },
 
   resetControl: function () {
-    progressMeterForeground
+    d3.select(".progressMeterForeground")
       .datum({startAngle: 0, endAngle: angle._360})
+      .attr("d", progressMeter.arc)
       .transition()
         .duration(0)
         .call(arcAngleTween, 0)
@@ -30,6 +31,12 @@ var actionController = {
       actionController.resetControl()
       update(controlDataEmpty())
     })
+
+    d3.selectAll("g.control")
+      .on("mouseenter", null)
+      .on("mouseleave", null)
+
+    update(controlDataBase())
   }
 
 }

@@ -26,7 +26,7 @@ var moveAction = (function () {
       pie.startAngle(currentStartAngle).endAngle(currentEndAngle)
 
       action.transition()
-        .duration(300)
+        .duration(animateDuration)
         .ease("linear")
         .delay(100)
         .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")

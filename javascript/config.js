@@ -5,14 +5,17 @@ var strokeWidth = 3
 var tierBreadth = 70
 var radius = 60
 var progressMeterOuterRadius = radius + strokeWidth / 2
-var innerRadius = radius - 10
+var progressMeterBreadth = 9
+var progressMeterInnerRadius = radius - progressMeterBreadth
+var innerRadius = radius - progressMeterBreadth
 var baseColor = "#ddd"
 
 var progressMeter = {
   baseColor: baseColor,
   color: "brown",
   backgroundArc: d3.svg.arc().outerRadius(progressMeterOuterRadius).innerRadius(innerRadius).startAngle(0),
-  arc: d3.svg.arc().outerRadius(progressMeterOuterRadius - strokeWidth).innerRadius(innerRadius + strokeWidth).startAngle(0)
+  arc: d3.svg.arc().outerRadius(progressMeterOuterRadius - strokeWidth).innerRadius(innerRadius + strokeWidth).startAngle(0),
+  clickArc: d3.svg.arc().outerRadius(progressMeterBreadth + 0.5).innerRadius(0.5).startAngle(0)
 }
 
 var angle = {
@@ -24,6 +27,7 @@ var angle = {
 
 var userSelectionTime = 1500
 var animateDuration = 300
+var clickDuration = 300
 var fanAngle = Math.PI / 20
 
 var currentStartAngle = 0
