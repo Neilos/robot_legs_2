@@ -54,7 +54,7 @@ var moveAction = (function () {
   var cancelActionPointFix = function () {
     progressMeterForeground
       .transition()
-        .duration(0)
+        .duration(100)
         .call(arcAngleTween, angle._360)
   }
 
