@@ -18,19 +18,19 @@ var controlDataBase = function () {
           { value: 1,
             type: "scroll",
             text: "up",
-            action: { execute: function(){console.log("scroll up")}  }},
+            action: scrollUpAction },
           { value: 1,
             type: "scroll",
             text: "down",
-            action: { execute: function(){console.log("scroll down")}  }},
+            action: scrollDownAction },
           { value: 1,
             type: "scroll",
             text: "left",
-            action: { execute: function(){console.log("scroll left")}  }},
+            action: scrollLeftAction },
           { value: 1,
             type: "scroll",
             text: "right",
-            action: { execute: function(){console.log("scroll right")} } }
+            action: scrollRightAction }
         ],
         action: { execute: function(){console.log("scroll")}  }},
       { value: 1,
@@ -40,13 +40,16 @@ var controlDataBase = function () {
           { value: 1,
             type: "zoom",
             text: "in",
-            action: { execute: function(){console.log("zoom in")}  }},
+            action: zoomInAction },
           { value: 1,
             type: "zoom",
             text: "out",
-            action: { execute: function(){console.log("zoom out")} } }
+            action: zoomOutAction }
         ],
-        action: { execute: function(){console.log("zoom")}  }},
+        action: { execute: function(){
+          console.log("zoom")
+        }}
+      },
       { value: 1,
         type: "navigate",
         text: "navigate",

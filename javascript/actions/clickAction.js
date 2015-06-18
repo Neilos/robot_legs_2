@@ -21,7 +21,6 @@ var clickAction = (function () {
         .attr("d", progressMeter.arc)
         .each('end', function () {
           actionController.resetEverything()
-          update(controlDataBase())
         })
   }
 
