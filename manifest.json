@@ -53,7 +53,7 @@
       "javascript/domSetup.js"
     ],
     "run_at": "document_idle",
-    "matches": [ "http://*/*", "https://*/*"]
+    "matches": [ "http://*/*", "https://*/*", "file:///*/*"]
   }],
   "manifest_version": 2
 }
