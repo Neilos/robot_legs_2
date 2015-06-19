@@ -14,6 +14,8 @@ var svg = d3.select("body")
               .style("top", 0)
               .style("left", 0)
               .style("pointer-events", "none")
+
+
 ///////////////////////////////////////////////////////
 /////////////////// definitions ///////////////////////
 
@@ -61,8 +63,7 @@ feMerge1.append("feMergeNode")
     .attr("in", "SourceGraphic");
 
 
-// create filter with id #drop-shadow2
-// height more than 100% so that the shadow is not clipped
+
 var filter2 = defs.append("filter")
     .attr("id", "drop-shadow2")
     .attr("x", -0.5)
@@ -70,24 +71,17 @@ var filter2 = defs.append("filter")
     .attr("width", "200%")
     .attr("height", "200%")
 
-// SourceAlpha refers to opacity of graphic that this filter will be applied to
-// convolve that with a Gaussian with standard deviation 3 and store result
-// in blur
 filter2.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
     .attr("stdDeviation", 3)
     .attr("result", "blur");
 
-// translate output of Gaussian blur to the right and downwards with 2px
-// store result in offsetBlur
 filter2.append("feOffset")
     .attr("in", "blur")
     .attr("dx", 6)
     .attr("dy", 6)
     .attr("result", "offsetBlur");
 
-// overlay original SourceGraphic over translated blurred opacity by using
-// feMerge filter. Order of specifying inputs is important!
 var feMerge2 = filter2.append("feMerge");
 
 feMerge2.append("feMergeNode")
