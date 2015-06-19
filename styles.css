@@ -1,0 +1,15 @@
+
+.ui-keyboard {
+  font-size: 2em;
+  min-width: 100%;
+}
+
+.ui-keyboard-button {
+  height: 2em;
+  margin: .1em;
+  cursor: pointer;
+}
+
+.ui-keyboard-button span {
+  min-width: 2em;
+}

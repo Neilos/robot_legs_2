@@ -48,6 +48,7 @@
       "javascript/controlStates/baseControlState.js",
       "javascript/controlStates/emptyControlState.js",
       "javascript/actionController.js",
+      "javascript/keyboard.js",
       "javascript/update.js",
       "javascript/audio.js",
       "javascript/domSetup.js"
