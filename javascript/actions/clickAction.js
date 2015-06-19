@@ -9,6 +9,7 @@ var clickAction = (function () {
     d3.select(".progressMeterForeground")
       .datum({endAngle: angle._360})
       .transition()
+        .style("fill", color("click"))
         .ease("sin")
         .duration(clickDuration)
         .attr("d", progressMeter.clickArc)
