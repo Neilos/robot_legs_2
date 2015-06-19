@@ -7,8 +7,8 @@ var content = document.getElementById('myContent')
 
 var clientWidth = 0
 var clientHeight = 0
-var contentWidth = container.width
-var contentHeight = container.height
+var contentWidth = 10000
+var contentHeight = 10000
 
 content.style.width = contentWidth
 content.style.height = contentHeight
