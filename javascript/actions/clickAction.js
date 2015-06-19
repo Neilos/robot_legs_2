@@ -14,7 +14,7 @@ var clickAction = (function () {
         .duration(clickDuration)
         .attr("d", progressMeter.clickArc)
         .each('end', function () {
-          playSound("button-16.mp3")
+          document.getElementById('robot-legs-drumbeat').play();
           console.log("click once")
         })
       .transition()
