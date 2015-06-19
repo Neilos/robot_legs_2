@@ -2,11 +2,11 @@ var moveAction = (function () {
 
   var execute = function () {
     d3.select("html").on("mousemove", function () {
-      var x = d3.event.clientX
-      var y = d3.event.clientY
+      actionPosition.x = d3.event.clientX
+      actionPosition.y = d3.event.clientY
 
-      if (screenCenterX < x) {
-        if (screenCenterY < y) {
+      if (screenCenterX < actionPosition.x) {
+        if (screenCenterY < actionPosition.y) {
           currentStartAngle = angle._270
           currentEndAngle = angle._360
         } else {
@@ -14,7 +14,7 @@ var moveAction = (function () {
           currentEndAngle = angle._270
         }
       } else {
-        if (screenCenterY < y) {
+        if (screenCenterY < actionPosition.y) {
           currentStartAngle = 0
           currentEndAngle = angle._90
         } else {
@@ -29,7 +29,7 @@ var moveAction = (function () {
         .duration(animateDuration)
         .ease("linear")
         .delay(100)
-        .attr("transform", "translate(" + x + "," + y + ") rotate(" + 0 + ")")
+        .attr("transform", "translate(" + actionPosition.x + "," + actionPosition.y + ") rotate(" + 0 + ")")
 
       update(controlDataEmpty())
     })

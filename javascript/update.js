@@ -84,8 +84,6 @@ var update = function (controlData) {
         d.data.selected = true
         d.data.highlighted = false
 
-        console.log("finished" + d.data.text)
-
         if (typeof d.data.action !== 'undefined') {
           d.data.action.execute()
         }
@@ -93,7 +91,10 @@ var update = function (controlData) {
         if (d.data.commands) {
           controlData.commands = d.data.commands
         }
+
         update(controlData)
+
+        console.log(d.data.text)
       })
 
   fanHighlighter.filter(function (d) { return d.data.selected })

@@ -98,6 +98,9 @@ var height = svg[0][0].clientHeight
 var screenCenterX = width / 2
 var screenCenterY = height / 2
 
+actionPosition.x = screenCenterX
+actionPosition.y = screenCenterY
+
 var action = svg.append("g")
                   .classed({"action": true})
                   .attr("transform", "translate(" + (width/2) + "," + (height/2) + ")")
@@ -122,7 +125,7 @@ var progressMeterBackground = action.append("path")
 var progressMeterForeground = action.append("path")
                           .classed({"progressMeterForeground": true})
                           .datum({endAngle: 0})
-                          .style("pointer-events", "auto")
+                          .style("pointer-events", "none")
                           .style("fill", progressMeter.color)
                           .attr("d", progressMeter.arc)
 

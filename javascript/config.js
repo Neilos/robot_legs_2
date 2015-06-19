@@ -25,6 +25,8 @@ var angle = {
   "_360": Math.PI * 2
 }
 
+var actionPosition = { x: -1000, y: -1000 }
+
 var userSelectionTime = 1500
 var animateDuration = 300
 var clickDuration = 300

@@ -1,5 +1,19 @@
 var clickAction = (function () {
 
+  var triggerClick = function () {
+    try {
+      d3.select("circle.actionSelector").style("pointer-events", "none")
+      var element = document.elementFromPoint(actionPosition.x, actionPosition.y)
+      $(element).trigger('eye-targeting', [ actionPosition.x, actionPosition.y ])
+      $(element)[0].click()
+    } catch (error) {
+      console.log(error, 'Target element that could not be clicked is: ', element)
+    } finally {
+      document.getElementById('robot-legs-drumbeat').play();
+      d3.select("circle.actionSelector").style("pointer-events", "auto")
+    }
+  }
+
   var execute = function () {
     d3.selectAll(".action").on("mouseenter", null)
     d3.selectAll(".action").on("mouseleave", null)
@@ -13,10 +27,7 @@ var clickAction = (function () {
         .ease("sin")
         .duration(clickDuration)
         .attr("d", progressMeter.clickArc)
-        .each('end', function () {
-          document.getElementById('robot-legs-drumbeat').play();
-          console.log("click once")
-        })
+        .each('end', triggerClick)
       .transition()
         .ease("linear")
         .duration(clickDuration)

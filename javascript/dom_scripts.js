@@ -84,15 +84,3 @@ function prepareKeyboard () {
   })
 }
 
-function triggerSelectionOf (element) {
-  try {
-    var element = document.elementFromPoint(point.x, point.y)
-    $(element).trigger('eye-targeting', [ point.x, point.y ])
-    $(element)[0].click()
-  } catch (error) {
-    console.log(error, 'Target element that could not be clicked is: ', element)
-  }
-  finally {
-    cancelSelection()
-  }
-}
