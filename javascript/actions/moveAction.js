@@ -40,15 +40,18 @@ var moveAction = (function () {
 
   var triggerActionPointFix = function () {
     progressMeterForeground
+      .style("fill", color("move"))
       .datum({endAngle: angle._360})
       .transition()
         .ease("linear")
         .duration(userSelectionTime)
         .call(arcAngleTween, 0)
-        .each('end', function () {
-          actionController.resetEverything()
-          update(controlDataBase())
-        });
+        .transition()
+          .duration(0)
+          .each('end', function () {
+            actionController.resetEverything()
+            update(controlDataBase())
+          });
   }
 
   var cancelActionPointFix = function () {

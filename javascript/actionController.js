@@ -2,20 +2,14 @@ var actionController = {
 
   activateControl: function (color) {
     d3.select(".progressMeterForeground")
-      .style("fill", color)
       .datum({startAngle: 0, endAngle: angle._360})
-      .transition()
-        .duration(0)
-        .call(arcAngleTween, angle._360)
+      .attr("d", progressMeter.arc)
+      .style("fill", color)
   },
 
   resetControl: function () {
     d3.select(".progressMeterForeground")
-      .datum({startAngle: 0, endAngle: angle._360})
-      .attr("d", progressMeter.arc)
-      .transition()
-        .duration(0)
-        .call(arcAngleTween, 0)
+      .datum({startAngle: 0, endAngle: 0})
   },
 
   resetEverything: function () {
