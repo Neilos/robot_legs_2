@@ -28,6 +28,11 @@ var angle = {
 var actionPosition = { x: -1000, y: -1000 }
 var userZoomLevel = 1
 
+var clientWidth = 0
+var clientHeight = 0
+var contentWidth = 10000
+var contentHeight = 10000
+
 var userSelectionTime = 1500
 var animateDuration = 300
 var clickDuration = 300

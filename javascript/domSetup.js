@@ -5,11 +5,6 @@ $( "body > *" ).wrapAll( "<div id='myContainer'><div id='myContent'></div></div>
 var container = document.getElementById('myContainer')
 var content = document.getElementById('myContent')
 
-var clientWidth = 0
-var clientHeight = 0
-var contentWidth = 10000
-var contentHeight = 10000
-
 content.style.width = contentWidth
 content.style.height = contentHeight
 
