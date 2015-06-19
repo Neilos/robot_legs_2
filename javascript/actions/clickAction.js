@@ -9,7 +9,7 @@ var clickAction = (function () {
     } catch (error) {
       console.log(error, 'Target element that could not be clicked is: ', element)
     } finally {
-      document.getElementById('robot-legs-drumbeat').play();
+      document.getElementById('robot-legs-click').play();
       d3.select("circle.actionSelector").style("pointer-events", "auto")
     }
   }
