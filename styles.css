@@ -13,3 +13,30 @@
 .ui-keyboard-button span {
   min-width: 2em;
 }
+
+#myContainer{
+  background: "none"
+  position: absolute;
+  cursor: default;
+  overflow: hidden;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+#myContent{
+  background: "none"
+  -webkit-transform-origin: left top;
+  -webkit-transform: translateZ(0);
+  -moz-transform-origin: left top;
+  -moz-transform: translateZ(0);
+  -ms-transform-origin: left top;
+  -ms-transform: translateZ(0);
+  -o-transform-origin: left top;
+  -o-transform: translateZ(0);
+  transform-origin: left top;
+  transform: translateZ(0);
+}

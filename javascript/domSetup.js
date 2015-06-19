@@ -1,4 +1,37 @@
 ///////////////////////////////////////////////////////
+/////////////////// zooming setup /////////////////////
+
+$( "body > *" ).wrapAll( "<div id='myContainer'><div id='myContent'></div></div>" )
+var container = document.getElementById('myContainer')
+var content = document.getElementById('myContent')
+
+var clientWidth = 0
+var clientHeight = 0
+var contentWidth = container.width
+var contentHeight = container.height
+
+content.style.width = contentWidth
+content.style.height = contentHeight
+
+var scroller  = new Scroller(render, {
+  zooming: true,
+  animating: true,
+  animationDuration: 500,
+  maxZoom: 5
+});
+
+// Reflow handling
+var reflow = function() {
+  clientWidth = container.clientWidth;
+  clientHeight = container.clientHeight;
+  scroller.setDimensions(clientWidth, clientHeight, contentWidth, contentHeight);
+};
+
+window.addEventListener("resize", reflow, false);
+reflow();
+
+
+///////////////////////////////////////////////////////
 /////////////////// dom related setup /////////////////
 
 var audio = d3.select("body")

@@ -26,6 +26,7 @@ var angle = {
 }
 
 var actionPosition = { x: -1000, y: -1000 }
+var userZoomLevel = 1
 
 var userSelectionTime = 1500
 var animateDuration = 300

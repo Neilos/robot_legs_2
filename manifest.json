@@ -35,6 +35,7 @@
       "/bower_components/keyboard/dist/layouts/keyboard-layouts-greywyvern.min.js",
       "/javascript/scroller/animate.js",
       "/javascript/scroller/scroller.js",
+      "/javascript/scroller/render.js",
       "javascript/config.js",
       "javascript/utils.js",
       "javascript/actions/clickAction.js",
