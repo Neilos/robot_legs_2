@@ -14,7 +14,11 @@ var update = function (controlData) {
                             .style("fill", baseColor)
                             .style("stroke", baseColor)
                             .style("stroke-width", strokeWidth)
-                            .style("filter", "url(#drop-shadow2)")
+                            .style("filter", function () {
+                              if (fanLevel > 0) {
+                                return "url(#drop-shadow2)"
+                              }
+                            })
 
   var tiers = action.selectAll("g.tier")
     .data(d3.values(controlData))
