@@ -44,6 +44,7 @@ var update = function (controlData) {
     .on("mouseleave", function (d) {
       d.data.highlighted = false
       d.data.selected = false
+      actionController.activateControl(baseColor)
       update(controlData)
     })
 
