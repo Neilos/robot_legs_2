@@ -1,0 +1,59 @@
+{
+  "name": "Robot Legs Eye-Tracking",
+  "version": "2.0",
+  "description": "An interface for users to interact with web pages using eye tracking equipment.",
+  "browser_action": {
+    "default_icon": {
+      "16": "images/active_icon_16.png",
+      "19": "images/active_icon_19.png",
+      "38": "images/active_icon_38.png",
+      "48": "images/active_icon_48.png",
+      "128": "images/active_icon_128.png"
+    },
+    "default_title": "Robot Legs Eye-Tracking"      // optional; shown in tooltip
+  },
+  "homepage_url": "https://github.com/Neilos/robot_legs_2",
+  "background": {
+    "scripts": ["javascript/background.js"]
+  },
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [ {
+    "css": [
+      "/bower_components/keyboard/dist/css/keyboard.min.css",
+      "styles.css"
+    ],
+    "js": [
+      "/bower_components/jquery/dist/jquery.min.js",
+      "/bower_components/jquery-ui/jquery-ui.min.js",
+      "/bower_components/keyboard/dist/js/jquery.keyboard.min.js",
+      "/bower_components/d3/d3.min.js",
+      "/bower_components/keyboard/dist/layouts/keyboard-layouts-combined.min.js",
+      "/bower_components/keyboard/dist/layouts/keyboard-layouts-greywyvern.min.js",
+      "/javascript/scroller/animate.js",
+      "/javascript/scroller/scroller.js",
+      "javascript/config.js",
+      "javascript/utils.js",
+      "javascript/actions/clickAction.js",
+      "javascript/actions/moveAction.js",
+      "javascript/actions/scrollDownAction.js",
+      "javascript/actions/scrollLeftAction.js",
+      "javascript/actions/scrollRightAction.js",
+      "javascript/actions/scrollUpAction.js",
+      "javascript/actions/zoomInAction.js",
+      "javascript/actions/zoomOutAction.js",
+      "javascript/controlStates/baseControlState.js",
+      "javascript/controlStates/emptyControlState.js",
+      "javascript/actionController.js",
+      "javascript/update.js",
+      "javascript/audio.js",
+      "javascript/domSetup.js"
+    ],
+    "run_at": "document_idle",
+    "matches": [ "http://*/*", "https://*/*"]
+  }],
+  "manifest_version": 2
+}
