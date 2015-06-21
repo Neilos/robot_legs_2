@@ -58,3 +58,10 @@ var pie = d3.layout.pie()
             .endAngle(angle._90)
 
 var fanArc = d3.svg.arc()
+
+var navigationControlState = {}
+var scrollControlState = {}
+var zoomControlState = {}
+var clickControlState = {}
+var moveControlState = {}
+

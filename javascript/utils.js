@@ -35,3 +35,27 @@ var arcAngleTween = function (transition, newAngle) {
     };
   });
 }
+
+var mergeObjects = function (target, source) {
+  if ( typeof target !== 'object' ) { target = {}; }
+  if ( typeof source !== 'object' ) { source = {}; }
+
+  for (var property in source) {
+    if ( source.hasOwnProperty(property) ) {
+      var sourceProperty = source[ property ];
+
+      if ( typeof sourceProperty === 'object' ) {
+        target[ property ] = util.merge( target[ property ], sourceProperty );
+        continue;
+      }
+
+      target[ property ] = sourceProperty;
+    }
+  }
+
+  for (var a = 2, l = arguments.length; a < l; a++) {
+    merge(target, arguments[a]);
+  }
+
+  return target;
+};
