@@ -43,7 +43,6 @@ var update = function (controlData) {
     })
     .on("mouseleave", function (d) {
       d.data.highlighted = false
-      d.data.selected = false
       actionController.activateControl(baseColor)
       update(controlData)
     })
@@ -81,20 +80,15 @@ var update = function (controlData) {
         )
       })
       .each("end", function (d) {
-        d.data.selected = true
-        d.data.highlighted = false
-
         if (typeof d.data.action !== 'undefined') {
           d.data.action.execute()
         }
 
-        if (d.data.commands) {
-          controlData.commands = d.data.commands
+        if (d.data.controlState) {
+          update(d.data.controlState.call())
+        } else {
+          update(controlData)
         }
-
-        update(controlData)
-
-        console.log(d.data.text)
       })
 
   fanHighlighter.filter(function (d) { return d.data.selected })

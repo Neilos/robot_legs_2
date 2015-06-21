@@ -18,12 +18,12 @@ var actionController = {
     d3.select("html").on("mousemove", null)
 
     d3.selectAll(".action").on("mouseenter", function () {
-      update(controlDataBase())
+      update(baseControlState())
     })
 
     d3.selectAll(".action").on("mouseleave", function () {
       actionController.resetControl()
-      update(controlDataEmpty())
+      update(emptyControlState())
     })
   }
 

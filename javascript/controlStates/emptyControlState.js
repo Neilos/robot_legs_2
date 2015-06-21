@@ -1,6 +1,7 @@
-var controlDataEmpty = function () {
+var emptyControlState = function () {
   return {
     options: [],
+    subOptions: [],
     commands: []
   }
 }

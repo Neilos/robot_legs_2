@@ -31,7 +31,7 @@ var moveAction = (function () {
         .delay(100)
         .attr("transform", "translate(" + actionPosition.x + "," + actionPosition.y + ") rotate(" + 0 + ")")
 
-      update(controlDataEmpty())
+      update(emptyControlState())
     })
 
     d3.selectAll(".action").on("mouseenter", triggerActionPointFix)
@@ -50,7 +50,7 @@ var moveAction = (function () {
           .duration(0)
           .each('end', function () {
             actionController.resetEverything()
-            update(controlDataBase())
+            update(baseControlState())
           });
   }
 

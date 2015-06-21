@@ -156,5 +156,5 @@ var progressMeterForeground = action.append("path")
 /////////////////// Initialize ////////////////////////
 
 actionController.resetEverything()
-update(controlDataEmpty())
+update(emptyControlState())
 
