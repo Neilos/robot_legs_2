@@ -26,7 +26,13 @@ var angle = {
 }
 
 var actionPosition = { x: -1000, y: -1000 }
-var userZoomLevel = 1
+
+var scroller  = new Scroller(render, {
+  zooming: true,
+  animating: true,
+  animationDuration: 500,
+  maxZoom: 5
+});
 
 var scrollIncrement = 100
 

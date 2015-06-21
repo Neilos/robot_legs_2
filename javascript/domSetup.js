@@ -8,13 +8,6 @@ var content = document.getElementById('myContent')
 content.style.width = contentWidth
 content.style.height = contentHeight
 
-var scroller  = new Scroller(render, {
-  zooming: true,
-  animating: true,
-  animationDuration: 500,
-  maxZoom: 5
-});
-
 // Reflow handling
 var reflow = function() {
   clientWidth = container.clientWidth;
