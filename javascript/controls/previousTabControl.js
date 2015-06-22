@@ -5,7 +5,7 @@ var previousTabControl = function (config) {
     text: "Previous tab",
     selected: false,
     highlighted: false,
-    controlState: navigateControlState,
+    controlState: previousTabControlState,
     action: previousTabAction
   }, config)
 }

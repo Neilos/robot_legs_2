@@ -83,6 +83,8 @@
       "javascript/controlStates/navigateForwardControlState.js",
       "javascript/controlStates/navigateHomeControlState.js",
       "javascript/controlStates/navigateTabsControlState.js",
+      "javascript/controlStates/nextTabControlState.js",
+      "javascript/controlStates/previousTabControlState.js",
       "javascript/controlStates/refreshPageControlState.js",
       "javascript/controlStates/scrollControlState.js",
       "javascript/controlStates/zoomControlState.js",

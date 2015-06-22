@@ -5,7 +5,7 @@ var nextTabControl = function (config) {
     text: "Next tab",
     selected: false,
     highlighted: false,
-    controlState: navigateControlState,
+    controlState: nextTabControlState,
     action: nextTabAction
   }, config)
 }
