@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////
 /////////////////// global config /////////////////////
 
-var strokeWidth = 3
+var strokeWidth = 5
 var tierBreadth = 90
 var radius = 60
 var progressMeterOuterRadius = radius + strokeWidth / 2
@@ -59,9 +59,15 @@ var pie = d3.layout.pie()
 
 var fanArc = d3.svg.arc()
 
-var navigationControlState = {}
+var baseControlState = {}
+var clickControlState = {}
+var emptyControlState = {}
+var mouseControlState = {}
+var moveControlState = {}
+var navigateBackControlState = {}
+var navigateControlState = {}
+var navigateForwardControlState = {}
+var navigateHomeControlState = {}
+var refreshPageControlState = {}
 var scrollControlState = {}
 var zoomControlState = {}
-var clickControlState = {}
-var moveControlState = {}
-
