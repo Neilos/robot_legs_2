@@ -49,6 +49,7 @@ var update = function (controlData) {
 
   controlsEnter.append("path").classed({"fanHighlighter": true})
   controlsEnter.append("path").classed({"fan": true})
+  controlsEnter.append("text").classed({"control-label-shadow": true})
   controlsEnter.append("text").classed({"control-label": true})
 
   var fanHighlighter = controls.select("path.fanHighlighter")
@@ -116,12 +117,31 @@ var update = function (controlData) {
       )
     })
 
-  var controlLabels = controls.select("text.control-label")
-  controlLabels
-    .classed({"control-label": true})
+  var controlLabelShadow = controls.select("text.control-label-shadow")
+  controlLabelShadow
     .style("pointer-events", "none")
     .style("fill", "none")
-    .style("font", "bold 10px Arial")
+    .style("font", "normal 14px Arial")
+    .style("stroke", "white")
+    .style("opacity", 0.5)
+    .attr("dx", "0.5px")
+    .attr("dy", "0.5px")
+    .attr("text-anchor", "middle")
+    .attr("transform", function(d, i, j) {
+      // set text's origin to the centroid
+      fanArc
+        .innerRadius(j * tierBreadth + radius)
+        .outerRadius((j + 1) * tierBreadth + radius)(d)
+      return "translate(" + fanArc.centroid(d) + ")"
+    })
+    .style("fill", "black")
+    .each(insertLinebreaks)
+
+  var controlLabels = controls.select("text.control-label")
+  controlLabels
+    .style("pointer-events", "none")
+    .style("fill", "none")
+    .style("font", "normal 14px Arial")
     .attr("dx", "0px")
     .attr("text-anchor", "middle")
     .attr("transform", function(d, i, j) {
