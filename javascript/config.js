@@ -60,7 +60,6 @@ var pie = d3.layout.pie()
 var fanArc = d3.svg.arc()
 
 var baseControlState = {}
-var clickControlState = {}
 var emptyControlState = {}
 var mouseControlState = {}
 var moveControlState = {}
