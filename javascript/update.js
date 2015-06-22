@@ -138,7 +138,7 @@ var update = function (controlData) {
       return "translate(" + fanArc.centroid(d) + ") rotate(" + textAngle(d, -90, 90) + ")";
     })
     .style("fill", "black")
-    .text(function (d) { return d.data.text })
+    .each(insertLinebreaks)
 
   controls.exit().remove()
 }
