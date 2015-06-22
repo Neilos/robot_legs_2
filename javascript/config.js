@@ -49,13 +49,13 @@ var currentStartAngle = 0
 var currentEndAngle = angle._90
 
 var COLOR_MAPPINGS = {
-  mouse: "#0099CC",
+  mouse: "#008AB8",
   move: "#008AB8",
   click: "#0099CC",
   scroll: "#009999",
   zoom: "#00CC99",
-  navigate: "#fdae6b",
-  tabs: "#fd8d3c"
+  navigate: "#fd8d3c",//"#fdae6b",
+  tabs: "#E68A5C"
 }
 
 var color = function (type) {
