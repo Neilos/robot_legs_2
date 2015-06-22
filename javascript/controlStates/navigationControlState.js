@@ -1,10 +1,7 @@
 var navigationControlState = function () {
   return [
     [
-      moveControl(),
-      clickControl(),
-      scrollControl(),
-      zoomControl(),
+      mouseControl(),
       navigateControl({selected: true})
     ],
 

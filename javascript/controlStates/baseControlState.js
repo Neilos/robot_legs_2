@@ -1,10 +1,7 @@
 var baseControlState = function () {
   return [
     [
-      moveControl(),
-      clickControl(),
-      scrollControl(),
-      zoomControl(),
+      mouseControl(),
       navigateControl()
     ]
   ]

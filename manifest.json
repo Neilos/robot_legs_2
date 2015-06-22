@@ -49,6 +49,7 @@
       "javascript/actions/zoomOutAction.js",
 
       "javascript/controls/clickControl.js",
+      "javascript/controls/mouseControl.js",
       "javascript/controls/moveControl.js",
       "javascript/controls/navigateBackControl.js",
       "javascript/controls/navigateControl.js",
@@ -67,6 +68,7 @@
       "javascript/controlStates/baseControlState.js",
       "javascript/controlStates/clickControlState.js",
       "javascript/controlStates/emptyControlState.js",
+      "javascript/controlStates/mouseControlState.js",
       "javascript/controlStates/moveControlState.js",
       "javascript/controlStates/navigationControlState.js",
       "javascript/controlStates/scrollControlState.js",

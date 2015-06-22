@@ -1,4 +1,4 @@
-var clickControlState = function () {
+var mouseControlState = function () {
   return [
     [
       mouseControl({selected: true}),
@@ -7,9 +7,9 @@ var clickControlState = function () {
 
     [
       moveControl(),
-      clickControl({selected: true}),
+      clickControl(),
       scrollControl(),
-      zoomControl()
-    ]
+      zoomControl(),
+    ],
   ]
 }
