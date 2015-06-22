@@ -41,9 +41,8 @@ var clientHeight = 0
 var contentWidth = 10000
 var contentHeight = 10000
 
-var userSelectionTime = 1000
-var animateDuration = 300
-var clickDuration = 300
+var userSelectionTime = 1200
+var animateDuration = 400
 var fanAngle = Math.PI / 20
 
 var currentStartAngle = 0
