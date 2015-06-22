@@ -122,20 +122,14 @@ var update = function (controlData) {
     .style("pointer-events", "none")
     .style("fill", "none")
     .style("font", "bold 10px Arial")
-    .attr("dx", function(d) {
-      var a = textAngle(d, 0, 0);
-      return a < 0 ? "-10px" : "10px";
-    })
-    .attr("text-anchor", function(d) {
-      var a = textAngle(d, 0, 0);
-      return a < 0 ? "start" : "end";
-    })
-    .attr("transform", function(d, i, j) { //set text'ss origin to the centroid
-      //we have to make sure to set these before calling arc.centroid
+    .attr("dx", "0px")
+    .attr("text-anchor", "middle")
+    .attr("transform", function(d, i, j) {
+      // set text's origin to the centroid
       fanArc
         .innerRadius(j * tierBreadth + radius)
         .outerRadius((j + 1) * tierBreadth + radius)(d)
-      return "translate(" + fanArc.centroid(d) + ") rotate(" + textAngle(d, -90, 90) + ")";
+      return "translate(" + fanArc.centroid(d) + ")"
     })
     .style("fill", "black")
     .each(insertLinebreaks)
