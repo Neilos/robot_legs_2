@@ -58,15 +58,15 @@ var filter1 = defs.append("filter")
 // in blur
 filter1.append("feGaussianBlur")
     .attr("in", "SourceAlpha")
-    .attr("stdDeviation", 5)
+    .attr("stdDeviation", 6)
     .attr("result", "blur");
 
 // translate output of Gaussian blur to the right and downwards with 2px
 // store result in offsetBlur
 filter1.append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 10)
-    .attr("dy", 10)
+    .attr("dx", 4)
+    .attr("dy", 4)
     .attr("result", "offsetBlur");
 
 filter1.append("feColorMatrix")
@@ -100,8 +100,8 @@ filter2.append("feGaussianBlur")
 
 filter2.append("feOffset")
     .attr("in", "blur")
-    .attr("dx", 6)
-    .attr("dy", 6)
+    .attr("dx", 2)
+    .attr("dy", 2)
     .attr("result", "offsetBlur");
 
 var feMerge2 = filter2.append("feMerge");
