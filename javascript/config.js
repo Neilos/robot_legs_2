@@ -2,7 +2,7 @@
 /////////////////// global config /////////////////////
 
 var strokeWidth = 5
-var tierBreadth = 90
+var tierBreadth = 100
 var radius = 60
 var progressMeterOuterRadius = radius + strokeWidth / 2
 var progressMeterBreadth = 9
@@ -49,7 +49,19 @@ var fanAngle = Math.PI / 20
 var currentStartAngle = 0
 var currentEndAngle = angle._90
 
-var color = d3.scale.category10()
+var COLOR_MAPPINGS = {
+  mouse: "#0099CC",
+  move: "#008AB8",
+  click: "#0099CC",
+  scroll: "#009999",
+  zoom: "#00CC99",
+  navigate: "#fdae6b",
+  tabs: "#fd8d3c"
+}
+
+var color = function (type) {
+  return COLOR_MAPPINGS[type]
+}
 
 var pie = d3.layout.pie()
             .value(function(d) { return d.value })

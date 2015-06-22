@@ -1,7 +1,7 @@
 var mouseControl = function (config) {
   return mergeObjects({
     value: 1,
-    type: "none",
+    type: "mouse",
     text: "Mouse",
     selected: false,
     highlighted: false,

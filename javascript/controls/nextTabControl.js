@@ -1,7 +1,7 @@
 var nextTabControl = function (config) {
   return mergeObjects({
     value: 1,
-    type: "navigate",
+    type: "tabs",
     text: "Next tab",
     selected: false,
     highlighted: false,

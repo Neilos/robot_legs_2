@@ -1,7 +1,7 @@
 var previousTabControl = function (config) {
   return mergeObjects({
     value: 1,
-    type: "navigate",
+    type: "tabs",
     text: "Previous tab",
     selected: false,
     highlighted: false,
