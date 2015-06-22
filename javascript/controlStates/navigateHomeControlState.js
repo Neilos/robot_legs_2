@@ -1,4 +1,4 @@
-var navigationControlState = function () {
+var navigateHomeControlState = function () {
   return [
     [
       mouseControl(),
@@ -8,7 +8,7 @@ var navigationControlState = function () {
     [
       navigateBackControl(),
       navigateForwardControl(),
-      navigateHomeControl(),
+      navigateHomeControl({selected: true}),
       refreshPageControl()
     ]
   ]

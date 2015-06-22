@@ -5,6 +5,7 @@ var navigateBackControl = function (config) {
     text: "Back",
     selected: false,
     highlighted: false,
-    action: { execute: function(){console.log("back") }}
+    controlState: navigateBackControlState,
+    action: backAction
   }, config)
 }

@@ -5,7 +5,6 @@ var clickControl = function (config) {
     text: "Click",
     selected: false,
     highlighted: false,
-    controlState: clickControlState,
     action: clickAction
   }, config)
 }

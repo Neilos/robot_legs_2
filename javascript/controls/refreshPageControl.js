@@ -5,6 +5,7 @@ var refreshPageControl = function (config) {
     text: "Refresh page",
     selected: false,
     highlighted: false,
-    action: { execute: function(){console.log("refresh page") }}
+    controlState: refreshPageControlState,
+    action: refreshPageAction
   }, config)
 }

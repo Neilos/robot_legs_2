@@ -5,7 +5,7 @@ var navigateControl = function (config) {
     text: "Navigate",
     selected: false,
     highlighted: false,
-    controlState: navigationControlState,
+    controlState: navigateControlState,
     action: { execute: function(){console.log("navigate") }}
   }, config)
 }

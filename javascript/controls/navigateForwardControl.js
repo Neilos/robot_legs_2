@@ -5,6 +5,7 @@ var navigateForwardControl = function (config) {
     text: "Forward",
     selected: false,
     highlighted: false,
-    action: { execute: function(){console.log("forward") }}
+    controlState: navigateForwardControlState,
+    action: forwardAction
   }, config)
 }

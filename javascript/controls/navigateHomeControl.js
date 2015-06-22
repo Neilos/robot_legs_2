@@ -5,6 +5,7 @@ var navigateHomeControl = function (config) {
     text: "Home",
     selected: false,
     highlighted: false,
-    action: { execute: function(){console.log("home") }}
+    controlState: navigateHomeControlState,
+    action: homeAction
   }, config)
 }
