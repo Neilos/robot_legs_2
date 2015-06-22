@@ -67,6 +67,7 @@ var navigateBackControlState = {}
 var navigateControlState = {}
 var navigateForwardControlState = {}
 var navigateHomeControlState = {}
+var navigateTabsControlState = {}
 var refreshPageControlState = {}
 var scrollControlState = {}
 var zoomControlState = {}

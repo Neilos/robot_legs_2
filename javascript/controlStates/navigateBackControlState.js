@@ -9,6 +9,7 @@ var navigateBackControlState = function () {
       navigateBackControl({selected: true}),
       navigateForwardControl(),
       navigateHomeControl(),
+      navigateTabsControl(),
       refreshPageControl()
     ]
   ]

@@ -1,4 +1,4 @@
-var refreshPageControlState = function () {
+var navigateTabsControlState = function () {
   return [
     [
       mouseControl(),
@@ -9,8 +9,13 @@ var refreshPageControlState = function () {
       navigateBackControl(),
       navigateForwardControl(),
       navigateHomeControl(),
-      navigateTabsControl(),
-      refreshPageControl({selected: true})
-    ]
+      navigateTabsControl({selected: true}),
+      refreshPageControl()
+    ],
+
+    [
+      nextTabControl(),
+      previousTabControl()
+    ],
   ]
 }
