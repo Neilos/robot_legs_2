@@ -2,7 +2,7 @@ var scrollLeftControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "scroll",
-    text: "scroll left",
+    text: "Left",
     selected: false,
     highlighted: false,
     action: scrollLeftAction

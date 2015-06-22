@@ -2,7 +2,7 @@ var navigateHomeControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "navigate",
-    text: "home",
+    text: "Home",
     selected: false,
     highlighted: false,
     action: { execute: function(){console.log("home") }}

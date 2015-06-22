@@ -2,7 +2,7 @@ var moveControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "move",
-    text: "move",
+    text: "Move",
     selected: false,
     highlighted: false,
     controlState: moveControlState,

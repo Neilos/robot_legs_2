@@ -2,7 +2,7 @@ var scrollControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "scroll",
-    text: "scroll",
+    text: "Scroll",
     selected: false,
     highlighted: false,
     controlState: scrollControlState,

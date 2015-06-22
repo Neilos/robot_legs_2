@@ -2,7 +2,7 @@ var mouseControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "none",
-    text: "mouse controls",
+    text: "Mouse",
     selected: false,
     highlighted: false,
     controlState: mouseControlState,

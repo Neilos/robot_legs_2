@@ -2,7 +2,7 @@ var zoomOutControl = function (config) {
   return mergeObjects({
     value: 1,
     type: "zoom",
-    text: "zoom out",
+    text: "Out",
     selected: false,
     highlighted: false,
     action: zoomOutAction
