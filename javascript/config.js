@@ -43,6 +43,7 @@ var contentHeight = 10000
 
 var userSelectionTime = 1200
 var animateDuration = 400
+var moveDuration = 2000
 var fanAngle = Math.PI / 20
 
 var currentStartAngle = 0

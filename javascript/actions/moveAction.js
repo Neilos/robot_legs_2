@@ -44,7 +44,7 @@ var moveAction = (function () {
       .datum({endAngle: angle._360})
       .transition()
         .ease("linear")
-        .duration(userSelectionTime)
+        .duration(moveDuration)
         .call(arcAngleTween, 0)
         .transition()
           .duration(0)
