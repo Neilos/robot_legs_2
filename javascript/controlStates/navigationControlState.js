@@ -1,6 +1,6 @@
 var navigationControlState = function () {
-  return {
-    options: [
+  return [
+    [
       moveControl(),
       clickControl(),
       scrollControl(),
@@ -8,11 +8,11 @@ var navigationControlState = function () {
       navigateControl({selected: true})
     ],
 
-    subOptions: [
+    [
       navigateBackControl(),
       navigateForwardControl(),
       navigateHomeControl(),
       refreshPageControl()
     ]
-  }
+  ]
 }

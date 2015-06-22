@@ -1,5 +1,5 @@
 var update = function (controlData) {
-  var fanLevel = d3.values(controlData).filter(function(controls) {
+  var fanLevel = controlData.filter(function(controls) {
     return controls.length > 0
   }).length
 
@@ -21,7 +21,7 @@ var update = function (controlData) {
                             })
 
   var tiers = action.selectAll("g.tier")
-    .data(d3.values(controlData))
+    .data(controlData)
 
   var tiersEnter = tiers.enter().append("g").classed({"tier": true})
 

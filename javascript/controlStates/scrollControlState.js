@@ -1,6 +1,6 @@
 var scrollControlState = function () {
-  return {
-    options: [
+  return [
+    [
       moveControl(),
       clickControl(),
       scrollControl({selected: true}),
@@ -8,11 +8,11 @@ var scrollControlState = function () {
       navigateControl()
     ],
 
-    subOptions: [
+    [
       scrollUpControl(),
       scrollDownControl(),
       scrollLeftControl(),
       scrollRightControl()
     ]
-  }
+  ]
 }

@@ -1,6 +1,6 @@
 var zoomControlState = function () {
-  return {
-    options: [
+  return [
+    [
       moveControl(),
       clickControl(),
       scrollControl(),
@@ -8,9 +8,9 @@ var zoomControlState = function () {
       navigateControl()
     ],
 
-    subOptions: [
+    [
       zoomInControl(),
       zoomOutControl()
     ]
-  }
+  ]
 }

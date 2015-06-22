@@ -1,11 +1,11 @@
 var clickControlState = function () {
-  return {
-    options: [
+  return [
+    [
       moveControl(),
       clickControl({selected: true}),
       scrollControl(),
       zoomControl(),
       navigateControl()
     ]
-  }
+  ]
 }
