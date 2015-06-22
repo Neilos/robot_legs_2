@@ -5,6 +5,7 @@ var clickAction = (function () {
       d3.select("circle.actionSelector").style("pointer-events", "none")
       var element = document.elementFromPoint(actionPosition.x, actionPosition.y)
       $(element).trigger('eye-targeting', [ actionPosition.x, actionPosition.y ])
+      $(element).trigger('focus', [ actionPosition.x, actionPosition.y ])
       $(element)[0].click()
     } catch (error) {
       console.log(error, 'Target element that could not be clicked is: ', element)
