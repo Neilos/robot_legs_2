@@ -49,6 +49,7 @@ var moveAction = (function () {
         .transition()
           .duration(0)
           .each('end', function () {
+            document.getElementById('robot-legs-collision').play();
             actionController.resetEverything()
             update(baseControlState())
           });
