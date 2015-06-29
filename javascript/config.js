@@ -55,7 +55,7 @@ var COLOR_MAPPINGS = {
   click: "#0099CC",
   scroll: "#009999",
   zoom: "#00CC99",
-  navigate: "#fd8d3c",//"#fdae6b",
+  navigate: "#fd8d3c",
   tabs: "#E68A5C"
 }
 
