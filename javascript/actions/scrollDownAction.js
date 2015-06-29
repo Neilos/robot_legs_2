@@ -1,7 +1,21 @@
 var scrollDownAction = (function () {
 
   var execute = function () {
-    scroller.scrollBy(0, scrollIncrement, true);
+    d3.select("circle.actionSelector").style("pointer-events", "none")
+    var element = document.elementFromPoint(actionPosition.x, actionPosition.y)
+    var scrollable = element ? jiggleScrollTop(element, 1) : null
+    d3.select("circle.actionSelector").style("pointer-events", "auto")
+
+    if (scrollable) {
+      var newScrollTop = Math.min(scrollable.scrollTop + scrollIncrement, scrollable.scrollHeight)
+      d3.select(scrollable)
+        .transition()
+        .duration(scrollAnimationDuration)
+        .tween('scrollDown', scrollTopTween(newScrollTop))
+    } else {
+      scroller.scrollBy(0, scrollIncrement, true);
+    }
+
     document.getElementById('robot-legs-ping-a-ding').play();
     actionController.resetEverything()
   }

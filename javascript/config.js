@@ -27,10 +27,12 @@ var angle = {
 
 var actionPosition = { x: -1000, y: -1000 }
 
-var scroller  = new Scroller(render, {
+var scrollAnimationDuration = 500
+
+var scroller = new Scroller(render, {
   zooming: true,
   animating: true,
-  animationDuration: 500,
+  animationDuration: scrollAnimationDuration,
   maxZoom: 5
 });
 

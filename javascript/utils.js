@@ -72,3 +72,58 @@ var insertLinebreaks = function (d) {
     }
 };
 
+// recursive function
+var jiggleScrollTop = function (element, jiggleAmount) {
+  var origScrollTop = element.scrollTop
+  var newjiggledScrollTop = origScrollTop + jiggleAmount
+
+  // Element is scrollable if it holds a given scrollTop
+  element.scrollTop = newjiggledScrollTop
+  if (element.scrollTop == newjiggledScrollTop) {
+    // Reset the scrollTop
+    element.scrollTop = origScrollTop
+    return element
+  } else {
+    if (element.parentElement) {
+      // check if the parent is scrollable
+      return jiggleScrollTop(element.parentElement, jiggleAmount)
+    } else {
+      return null
+    }
+  }
+}
+
+var scrollTopTween = function (newScrollTop) {
+  return function () {
+    var interpolate = d3.interpolateNumber(this.scrollTop, newScrollTop)
+    return function (time) { this.scrollTop = interpolate(time) }
+  }
+}
+
+// recursive function
+var jiggleScrollLeft = function (element, jiggleAmount) {
+  var origScrollLeft = element.scrollLeft
+  var newjiggledScrollLeft = origScrollLeft + jiggleAmount
+
+  // Element is scrollable if it holds a given scrollLeft
+  element.scrollLeft = newjiggledScrollLeft
+  if (element.scrollLeft == newjiggledScrollLeft) {
+    // Reset the scrollLeft
+    element.scrollLeft = origScrollLeft
+    return element
+  } else {
+    if (element.parentElement) {
+      // check if the parent is scrollable
+      return jiggleScrollLeft(element.parentElement, jiggleAmount)
+    } else {
+      return null
+    }
+  }
+}
+
+var scrollLeftTween = function (newScrollLeft) {
+  return function () {
+    var interpolate = d3.interpolateNumber(this.scrollLeft, newScrollLeft)
+    return function (time) { this.scrollLeft = interpolate(time) }
+  }
+}
